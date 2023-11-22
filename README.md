@@ -1,5 +1,5 @@
 # LT Driver App (LTFahrer)
-An app for the abo delivery to fix pickup hubs. 
+An app for the abo delivery to fixed pickup hubs. 
 
 ## Developing
 
