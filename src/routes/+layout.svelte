@@ -5,18 +5,18 @@
 	import { NDKNip07Signer } from '@nostr-dev-kit/ndk';
 	import { currentUser } from '$stores/current-user';
 	import Navbar from '$components/Navbar.svelte';
-		
+
 	onMount(async () => {
-        try {
-            $ndk.connect();
+		try {
+			$ndk.connect();
 
 			if (localStorage.getItem('nostr-login') === 'nip07') {
 				await login();
 			}
-        } catch (e) {
-            console.error(`layout error`, e);
-        }
-    });
+		} catch (e) {
+			console.error(`layout error`, e);
+		}
+	});
 
 	async function login() {
 		$ndk.signer = new NDKNip07Signer();
