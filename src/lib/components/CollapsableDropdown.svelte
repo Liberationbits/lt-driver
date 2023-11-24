@@ -18,7 +18,7 @@
 </script>
 
 <div class="dropdown {hasFocus ? 'dropdown-open' : ''} dropdown-end">
-	<label tabindex="0" on:click={toggleDropdown}>
+	<button tabindex="0" on:click={toggleDropdown}>
 		<div
 			class="{hasFocus
 				? 'hidden'
@@ -35,8 +35,8 @@
 				<CloseIcon />
 			</div>
 		</div>
-	</label>
-	<div tabindex="0" class="dropdown-content z-[1] mt-2">
+	</button>
+	<div class="dropdown-content z-[1] mt-2">
 		<slot />
 	</div>
 </div>
