@@ -9,13 +9,20 @@
 	async function loginAsGuest() {
 		const pk = NDKPrivateKeySigner.generate();
 		$ndk.signer = pk;
-		$currentUser = await $ndk.signer.user();
+		try {
+			$currentUser = await $ndk.signer?.user();
 
-		localStorage.setItem('nostr-key-method', 'pk');
-		localStorage.setItem('nostr-key', pk.privateKey!);
-		localStorage.setItem('nostr-target-npub', $currentUser.npub);
+			if ($currentUser) {
+				localStorage.setItem('nostr-key-method', 'pk');
+				localStorage.setItem('nostr-key', pk.privateKey!);
+				localStorage.setItem('nostr-target-npub', $currentUser.npub);
 
-		// setupPlaceholderProfile();
+				// setupPlaceholderProfile();
+			}
+		} catch (error) {
+			console.log('Error creating new user: ' + error);
+			// todo notify user additionally
+		}
 	}
 </script>
 

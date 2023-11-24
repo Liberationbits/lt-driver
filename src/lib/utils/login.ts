@@ -107,7 +107,7 @@ async function nip46SignIn(
 	remoteUser.ndk = bunkerNDK;
 
 	// check if there is a private key stored in localStorage
-	let localSigner: NDKPrivateKeySigner | null = null;
+	let localSigner: NDKPrivateKeySigner | undefined = undefined;
 
 	if (existingPrivateKey) {
 		localSigner = new NDKPrivateKeySigner(existingPrivateKey);

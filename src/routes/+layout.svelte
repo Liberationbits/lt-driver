@@ -20,11 +20,15 @@
 
 	async function login() {
 		$ndk.signer = new NDKNip07Signer();
-		$currentUser = await $ndk.signer?.blockUntilReady();
-		$currentUser.ndk = $ndk;
-
-		if ($currentUser) {
-			localStorage.setItem('nostr-login', 'nip07');
+		try {
+			$currentUser = await $ndk.signer?.blockUntilReady();
+			if ($currentUser) {
+				$currentUser.ndk = $ndk;
+				localStorage.setItem('nostr-login', 'nip07');
+			}
+		} catch (error) {
+			console.log('Error during login: ' + error);
+			// todo: notify user additionally
 		}
 	}
 
