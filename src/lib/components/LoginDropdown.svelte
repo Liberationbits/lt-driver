@@ -11,7 +11,7 @@
 		<!-- dropdown-button can not be <button> element. Issue with daisyUI dropdown -->
 		<div
 			slot="dropdown-button"
-			class="text-base-100-content btn btn-sm btn-rounded-full btn-outline rounded-full border-accent2 bg-transparent text-sm
+			class="text-base-100-content btn btn-rounded-full btn-outline btn-sm rounded-full border-accent2 bg-transparent text-sm
             normal-case hover:text-base-100-content hover:border-accent2 hover:bg-accent2 hover:bg-opacity-20 md:text-base"
 		>
 			<span class="px-0 md:px-4 lg:px-9"> Einloggen </span>

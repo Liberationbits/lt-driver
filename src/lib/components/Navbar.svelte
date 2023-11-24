@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentUser } from '$stores/current-user';
+	import { profileName } from '$stores/current-user';
 	import CurrentUser from './CurrentUser.svelte';
 	import { Truck } from 'phosphor-svelte';
 </script>
@@ -12,12 +12,12 @@
 	</div>
 
 	<div class="navbar-center">
-		<h1 class="font-bol text-base normal-case md:text-xl ml-1 mr-1">
-			Liefertour - {$currentUser?.profile?.displayName}
+		<h1 class="font-bol ml-1 mr-1 text-base normal-case md:text-xl">
+			Liefertour{$profileName}
 		</h1>
 	</div>
 
-	<div class="navbar-end flex flex-row items-center gap-4 ml-1">
+	<div class="navbar-end ml-1 flex flex-row items-center gap-4">
 		<CurrentUser />
 	</div>
 </div>
