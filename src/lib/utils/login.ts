@@ -18,7 +18,7 @@ export async function login(
 	switch (nostrKeyMethod) {
 		case 'none':
 			return null;
-		case 'pk':
+		case 'pk': {
 			const key = localStorage.getItem('nostr-key');
 
 			if (!key) return null;
@@ -28,20 +28,26 @@ export async function login(
 			const user = await signer.user();
 			if (user) user.ndk = ndk;
 			return user;
+		}
 		case 'nip07':
 			return nip07SignIn(ndk);
 		case 'nip46': {
 			const promise = new Promise<NDKUser | null>((resolve, reject) => {
-				const existingPrivateKey = localStorage.getItem('nostr-nsecbunker-key');
+				try {
+					const existingPrivateKey = localStorage.getItem('nostr-nsecbunker-key');
 
-				if (!bunkerNDK) bunkerNDK = ndk;
+					if (!bunkerNDK) bunkerNDK = ndk;
 
-				if (existingPrivateKey) {
-					bunkerNDK.connect(2500);
-					bunkerNDK.pool.on('relay:connect', async () => {
-						const user = await nip46SignIn(ndk, bunkerNDK!, existingPrivateKey);
-						resolve(user);
-					});
+					if (existingPrivateKey) {
+						bunkerNDK.connect(2500);
+						bunkerNDK.pool.on('relay:connect', async () => {
+							const user = await nip46SignIn(ndk, bunkerNDK!, existingPrivateKey);
+							resolve(user);
+						});
+					}
+				} catch (error) {
+					console.error('Error trying to login with NIP-46 (nsec bunker)' + error);
+					reject(error);
 				}
 			});
 
@@ -52,15 +58,25 @@ export async function login(
 				// Attempt to see window.nostr a few times, there is a race condition
 				// since the page might begin rendering before the nostr extension is loaded
 				let loadAttempts = 0;
-				const loadNip07Interval = setInterval(() => {
-					if (window.nostr) {
-						clearInterval(loadNip07Interval);
-						const user = nip07SignIn(ndk);
-						resolve(user);
-					}
+				try {
+					const loadNip07Interval = setInterval(() => {
+						if (window.nostr) {
+							clearInterval(loadNip07Interval);
+							const user = nip07SignIn(ndk);
+							resolve(user);
+						}
 
-					if (loadAttempts++ > 10) clearInterval(loadNip07Interval);
-				}, 100);
+						if (loadAttempts++ > 10) {
+							clearInterval(loadNip07Interval);
+							const error = 'Giving up after many attempts to find NIP-07 login';
+							console.error(error);
+							reject(error);
+						}
+					}, 100);
+				} catch (error) {
+					console.error(error);
+					reject(error);
+				}
 			});
 
 			return promise;
@@ -86,8 +102,9 @@ async function nip07SignIn(ndk: NDK): Promise<NDKUser | null> {
 			user = await ndk.signer.user();
 			user.ndk = ndk;
 			localStorage.setItem('currentUserNpub', user.npub);
-			ndk = ndk;
-		} catch (e) {}
+		} catch (e) {
+			console.error('Error while doing NIP-07 login:' + e);
+		}
 	}
 
 	return user;

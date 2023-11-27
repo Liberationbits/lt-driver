@@ -10,7 +10,7 @@ let cacheAdapter: NDKCacheAdapter | undefined;
 
 if (browser) {
 	cacheAdapter = new NDKDexieCacheAdapter({
-		dbName: 'vendata'
+		dbName: 'lt-driver'
 	});
 } else {
 	// cacheAdapter = new NDKRedisCacheAdapter();

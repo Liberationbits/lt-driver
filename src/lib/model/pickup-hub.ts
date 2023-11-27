@@ -1,8 +1,8 @@
 type PickupHub = {
-	code: String;
-	district: String;
-	membersCount: Number;
-	portionsCount: Number;
+	code: string;
+	district: string;
+	membersCount: number;
+	portionsCount: number;
 };
 
 // For now we have hard coded pickup hubs
