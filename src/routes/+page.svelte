@@ -3,8 +3,20 @@
 	import { currentUser } from '$stores/current-user';
 	import { CaretDoubleLeft, CaretDoubleRight, CheckCircle } from 'phosphor-svelte';
 	import { OrderState } from '$lib/model/order';
+	import { onDestroy } from 'svelte';
+	import dayjs from 'dayjs';
+	import weekOfYear from 'dayjs/plugin/weekOfYear';
 
-	let systemState = OrderState.Packen;
+	dayjs.extend(weekOfYear);
+	let currentDate = dayjs();
+	const intervalId = setInterval(() => {
+		currentDate = dayjs();
+	}, 1000);
+	const weekNumber = currentDate.week();
+
+	onDestroy(() => clearInterval(intervalId));
+
+	let orderState = OrderState.Packen;
 	let currentHub = 0;
 	$: hubCode = pickupHubs[currentHub].code;
 	$: members = pickupHubs[currentHub].membersCount;
@@ -30,10 +42,10 @@
 	>
 		<div class="flex flex-col gap-3">
 			<div class="text-center tracking-wider text-orange-500 sm:text-2xl md:text-3xl lg:text-4xl">
-				{OrderState[systemState]}
+				{OrderState[orderState]}
 			</div>
 			<div class="text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl">
-				KW 45 Datum: 10.11.2023 Zeit: 18:19
+				KW {weekNumber} - {currentDate.format('DD.MM.YYYY HH:mm:ss')}
 			</div>
 			{#if $currentUser}
 				<div
@@ -43,7 +55,7 @@
 					{hubCode} ({members} | {portions})
 					<button on:click={nextHub}><CaretDoubleRight size={28} color="#18cda9" /></button>
 				</div>
-				{#if systemState == OrderState.Packen}
+				{#if orderState == OrderState.Packen}
 					<div class="mx-2 flex items-center justify-between gap-2">
 						<label for="boxes">Kistenanzahl:</label>
 						<input id="boxes" type="number" min="0" max="99" class="xs:input-xs h-8 w-8" />
