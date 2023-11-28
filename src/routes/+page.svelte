@@ -2,9 +2,9 @@
 	import { pickupHubs } from '$lib/model/pickup-hub';
 	import { currentUser } from '$stores/current-user';
 	import { CaretDoubleLeft, CaretDoubleRight, CheckCircle } from 'phosphor-svelte';
-	import SystemState from '$lib/model/system-state';
+	import { OrderState } from '$lib/model/order';
 
-	let systemState = SystemState.Packen;
+	let systemState = OrderState.Packen;
 	let currentHub = 0;
 	$: hubCode = pickupHubs[currentHub].code;
 	$: members = pickupHubs[currentHub].membersCount;
@@ -30,7 +30,7 @@
 	>
 		<div class="flex flex-col gap-3">
 			<div class="text-center tracking-wider text-orange-500 sm:text-2xl md:text-3xl lg:text-4xl">
-				{SystemState[systemState]}
+				{OrderState[systemState]}
 			</div>
 			<div class="text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl">
 				KW 45 Datum: 10.11.2023 Zeit: 18:19
@@ -43,7 +43,7 @@
 					{hubCode} ({members} | {portions})
 					<button on:click={nextHub}><CaretDoubleRight size={28} color="#18cda9" /></button>
 				</div>
-				{#if systemState == SystemState.Packen}
+				{#if systemState == OrderState.Packen}
 					<div class="mx-2 flex items-center justify-between gap-2">
 						<label for="boxes">Kistenanzahl:</label>
 						<input id="boxes" type="number" min="0" max="99" class="xs:input-xs h-8 w-8" />
