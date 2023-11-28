@@ -8,7 +8,7 @@
 	let currentHub = 0;
 	$: hubCode = pickupHubs[currentHub].code;
 	$: members = pickupHubs[currentHub].membersCount;
-	$: portions = pickupHubs[currentHub].portionsCount;
+	$: portions = pickupHubs[currentHub].portions;
 
 	function prevHub() {
 		if (currentHub > 0) currentHub = (currentHub - 1) % pickupHubs.length;
