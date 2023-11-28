@@ -38,7 +38,7 @@ export const defaultRelays = [
 	// 'ws://localhost:8080',
 
 	'wss://nos.lol',
-	'wss://relay.f7z.io',
+	//'wss://relay.f7z.io',
 	'wss://relay.damus.io',
 	'wss://relay.snort.social',
 	'wss://offchain.pub/',
