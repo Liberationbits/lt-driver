@@ -5,14 +5,18 @@ export enum OrderState {
 	Abgeschlossen // finished
 }
 
+export type OrderShipping = {
+	id: string;
+	orderId: string;
+	boxesCount: number;
+}
+
 export type Order = {
 	id: string;
 	customerId: string;
 	portions: number;
-	ajuice: number;
-	eggs: number;
-	potatoes: number;
 	state: OrderState;
+	shipping: OrderShipping | undefined
 };
 
 export default Order;

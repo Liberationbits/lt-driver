@@ -41,7 +41,7 @@
 	<section
 		class="mx-2 flex flex-col items-center justify-center gap-8 md:h-[50vh] md:flex-row lg:mx-auto"
 	>
-		<div class="flex flex-col gap-3">
+		<div class="flex flex-col gap-3 w-full">
 			{#if $currentUser}
 				<div class="text-center tracking-wider text-orange-500 sm:text-2xl md:text-3xl lg:text-4xl">
 					{OrderState[nextOrderState]}
@@ -57,7 +57,7 @@
 					<button on:click={nextHub}><CaretDoubleRight size={28} color="#18cda9" /></button>
 				</div>
 				{#if nextOrderState == OrderState.Packen}
-					<div class="mx-2 flex items-center justify-between gap-2">
+					<div class="mx-2 flex items-center gap-2">
 						<label for="boxes">Kistenanzahl:</label>
 						<input
 							id="boxes"
@@ -65,35 +65,6 @@
 							min="0"
 							max="99"
 							value={currentOrder.portions}
-							class="input-xs xs:w-3"
-						/>
-						<label for="a-juice">Apfelsaft:</label>
-						<input
-							id="a-juice"
-							type="number"
-							min="0"
-							max="99"
-							value={currentOrder.ajuice}
-							class="input-xs xs:w-3"
-						/>
-					</div>
-					<div class="mx-2 flex items-center justify-between gap-2">
-						<label for="eggs">Eier:</label>
-						<input
-							id="eggs"
-							type="number"
-							min="0"
-							max="99"
-							value={currentOrder.eggs}
-							class="input-xs xs:w-3"
-						/>
-						<label for="potatoes">Kartoffeln (Kg):</label>
-						<input
-							id="potatoes"
-							type="number"
-							min="0"
-							max="99"
-							value={currentOrder.potatoes}
 							class="input-xs xs:w-3"
 						/>
 					</div>
