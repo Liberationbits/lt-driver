@@ -21,6 +21,7 @@
 	$: currentHub = pickupHubs[currentHubIndx];
 	$: orderFound = orders.find((o) => o.customerId == currentHub.id);
 	$: currentOrder = orderFound ? orderFound : orders[0];
+	$: orderShipping = currentOrder.shipping;
 	$: nextOrderState = currentOrder.state < 4 ? currentOrder.state + 1 : currentOrder.state;
 	
 	function prevHub() {
@@ -64,7 +65,7 @@
 							type="number"
 							min="0"
 							max="99"
-							value={currentOrder.portions}
+							value={orderShipping?.boxesCount}
 							class="input-xs xs:w-3"
 						/>
 					</div>
