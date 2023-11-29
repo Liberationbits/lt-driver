@@ -22,10 +22,7 @@
 	$: orderFound = orders.find((o) => o.customerId == currentHub.id);
 	$: currentOrder = orderFound ? orderFound : orders[0];
 	$: nextOrderState = currentOrder.state < 4 ? currentOrder.state + 1 : currentOrder.state;
-	$: hubCode = currentHub.code;
-	$: hubMembers = currentHub.membersCount;
-	$: hubPortions = currentHub.portions;
-
+	
 	function prevHub() {
 		if (currentHubIndx > 0) currentHubIndx = (currentHubIndx - 1) % pickupHubs.length;
 		else currentHubIndx = pickupHubs.length - currentHubIndx - 1;
@@ -56,7 +53,7 @@
 					class="flex flex-row gap-3 self-center text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl"
 				>
 					<button on:click={prevHub}><CaretDoubleLeft size={28} color="#18cda9" /></button>
-					{hubCode} ({hubMembers} | {hubPortions})
+					{currentHub.code} ({currentHub.membersCount} | {currentHub.portions})
 					<button on:click={nextHub}><CaretDoubleRight size={28} color="#18cda9" /></button>
 				</div>
 				{#if nextOrderState == OrderState.Packen}
@@ -68,7 +65,7 @@
 							min="0"
 							max="99"
 							value={currentOrder.portions}
-							class="xs:input-xs xs:w-8 p-1"
+							class="input-xs xs:w-3"
 						/>
 						<label for="a-juice">Apfelsaft:</label>
 						<input
@@ -77,7 +74,7 @@
 							min="0"
 							max="99"
 							value={currentOrder.ajuice}
-							class="xs:input-xs xs:w-8 p-1"
+							class="input-xs xs:w-3"
 						/>
 					</div>
 					<div class="mx-2 flex items-center justify-between gap-2">
@@ -88,7 +85,7 @@
 							min="0"
 							max="99"
 							value={currentOrder.eggs}
-							class="xs:input-xs xs:w-8 p-1"
+							class="input-xs xs:w-3"
 						/>
 						<label for="potatoes">Kartoffeln (Kg):</label>
 						<input
@@ -97,14 +94,14 @@
 							min="0"
 							max="99"
 							value={currentOrder.potatoes}
-							class="xs:input-xs xs:w-8 p-1"
+							class="input-xs xs:w-3"
 						/>
 					</div>
 					<div class="m-2 flex items-center gap-3">
 						<textarea
 							rows="3"
 							placeholder="Kommentar..."
-							class="xs:textarea-xs textarea-bordered w-full"
+							class="textarea-xs textarea-bordered w-full"
 						/>
 						<button><CheckCircle size={32} color="#18cda9" /></button>
 					</div>
