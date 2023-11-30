@@ -2,7 +2,7 @@
 	import { pickupHubs } from '$lib/stores/pickup-hubs';
 	import { currentUser } from '$stores/current-user';
 	import { CaretDoubleLeft, CaretDoubleRight, CheckCircle } from 'phosphor-svelte';
-	import { ShippingState } from '$lib/model/order-shipping';
+	import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
 	import { onDestroy } from 'svelte';
 	import dayjs from 'dayjs';
 	import weekOfYear from 'dayjs/plugin/weekOfYear';
@@ -19,8 +19,7 @@
 
 	let currentHubIndx = 0;
 	$: currentHub = $pickupHubs[currentHubIndx];
-	$: shippingFound = $orderShippings.find((os) => os.customerId == currentHub.id);
-	$: currentShipping = shippingFound ? shippingFound : $orderShippings[0];
+	$: currentShipping = findCurrentShipping(currentHub);
 	$: shippingState = currentShipping.shippingState();
 
 	function prevHub() {
@@ -30,6 +29,19 @@
 
 	function nextHub() {
 		currentHubIndx = (currentHubIndx + 1) % $pickupHubs.length;
+	}
+
+	/**
+	 * @param {{ id: string }} hub
+	 */
+	function findCurrentShipping(hub) {
+		const shippingFound = $orderShippings.find((os) => os.customerId == hub.id);
+		if (shippingFound) return shippingFound;
+		else {
+			const freshOrderShipping = new OrderShipping($pickupHubs[currentHubIndx].id);
+			$orderShippings.push(freshOrderShipping);
+			return freshOrderShipping;
+		}
 	}
 </script>
 
