@@ -1,12 +1,12 @@
 <script>
-	import { pickupHubs } from '$lib/model/pickup-hub';
+	import { pickupHubs } from '$lib/stores/pickup-hubs';
 	import { currentUser } from '$stores/current-user';
 	import { CaretDoubleLeft, CaretDoubleRight, CheckCircle } from 'phosphor-svelte';
 	import { ShippingState } from '$lib/model/order-shipping';
 	import { onDestroy } from 'svelte';
 	import dayjs from 'dayjs';
 	import weekOfYear from 'dayjs/plugin/weekOfYear';
-	import { orderShippings as orderShippings } from '$stores/order-shippings';
+	import { orderShippings } from '$stores/order-shippings';
 
 	dayjs.extend(weekOfYear);
 	let currentDate = dayjs();
@@ -18,18 +18,18 @@
 	onDestroy(() => clearInterval(intervalId));
 
 	let currentHubIndx = 0;
-	$: currentHub = pickupHubs[currentHubIndx];
-	$: shippingFound = orderShippings.find((os) => os.customerId == currentHub.id);
-	$: currentShipping = shippingFound ? shippingFound : orderShippings[0];
+	$: currentHub = $pickupHubs[currentHubIndx];
+	$: shippingFound = $orderShippings.find((os) => os.customerId == currentHub.id);
+	$: currentShipping = shippingFound ? shippingFound : $orderShippings[0];
 	$: shippingState = currentShipping.shippingState();
 
 	function prevHub() {
-		if (currentHubIndx > 0) currentHubIndx = (currentHubIndx - 1) % pickupHubs.length;
-		else currentHubIndx = pickupHubs.length - currentHubIndx - 1;
+		if (currentHubIndx > 0) currentHubIndx = (currentHubIndx - 1) % $pickupHubs.length;
+		else currentHubIndx = $pickupHubs.length - currentHubIndx - 1;
 	}
 
 	function nextHub() {
-		currentHubIndx = (currentHubIndx + 1) % pickupHubs.length;
+		currentHubIndx = (currentHubIndx + 1) % $pickupHubs.length;
 	}
 </script>
 
