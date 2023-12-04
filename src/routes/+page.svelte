@@ -30,24 +30,24 @@
 	onMount(() => {
 		packingBoxes = currentShipping.packingBoxes;
 		comment = currentShipping.comment;
-		({ packingBoxes, comment } = updateViewModel(currentHub));
+		({ packingBoxes, comment } = createNewViewModel(currentHub));
 	});
 
 	function prevHub() {
 		if (currentHubIndx > 0) currentHubIndx = (currentHubIndx - 1) % $pickupHubs.length;
 		else currentHubIndx = $pickupHubs.length - currentHubIndx - 1;
-		({ packingBoxes, comment } = updateViewModel($pickupHubs[currentHubIndx]));
+		({ packingBoxes, comment } = createNewViewModel($pickupHubs[currentHubIndx]));
 	}
 
 	function nextHub() {
 		currentHubIndx = (currentHubIndx + 1) % $pickupHubs.length;
-		({ packingBoxes, comment } = updateViewModel($pickupHubs[currentHubIndx]));
+		({ packingBoxes, comment } = createNewViewModel($pickupHubs[currentHubIndx]));
 	}
 
 	/**
 	 * @param {{ id: string; }} hub
 	 */
-	function updateViewModel(hub) {
+	function createNewViewModel(hub) {
 		const shipping = findCurrentShipping(hub);
 		return {
 			packingBoxes: shipping.packingBoxes,
