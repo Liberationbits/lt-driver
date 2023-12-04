@@ -38,6 +38,7 @@
 
 	function sendPackedEvent() {
 		currentShipping.packingBoxes = packingBoxes;
+		nextHub();
 		// send packed event
 	}
 
