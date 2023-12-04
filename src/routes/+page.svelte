@@ -28,20 +28,20 @@
 	$: shippingState = currentShipping.shippingState();
 
 	onMount(() => {
-		packingBoxes = currentShipping.packingBoxes
+		packingBoxes = currentShipping.packingBoxes;
 		comment = currentShipping.comment;
-		({packingBoxes, comment} = updateViewModel(currentHub));
+		({ packingBoxes, comment } = updateViewModel(currentHub));
 	});
 
 	function prevHub() {
 		if (currentHubIndx > 0) currentHubIndx = (currentHubIndx - 1) % $pickupHubs.length;
 		else currentHubIndx = $pickupHubs.length - currentHubIndx - 1;
-		({packingBoxes, comment} = updateViewModel($pickupHubs[currentHubIndx]));
+		({ packingBoxes, comment } = updateViewModel($pickupHubs[currentHubIndx]));
 	}
 
 	function nextHub() {
 		currentHubIndx = (currentHubIndx + 1) % $pickupHubs.length;
-		({packingBoxes, comment} = updateViewModel($pickupHubs[currentHubIndx]));
+		({ packingBoxes, comment } = updateViewModel($pickupHubs[currentHubIndx]));
 	}
 
 	/**
