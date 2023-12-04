@@ -17,27 +17,47 @@
 
 	onDestroy(() => clearInterval(intervalId));
 
+	// view model
 	let currentHubIndx = 0;
+	let packingBoxes = 0;
+	let comment = '';
+
+	// view model reactive variables
 	$: currentHub = $pickupHubs[currentHubIndx];
 	$: currentShipping = findCurrentShipping(currentHub);
 	$: shippingState = currentShipping.shippingState();
-	let packingBoxes = 0;
 
-	onMount(() => packingBoxes = currentShipping.packingBoxes);
+	onMount(() => {
+		packingBoxes = currentShipping.packingBoxes
+		comment = currentShipping.comment;
+		({packingBoxes, comment} = updateViewModel(currentHub));
+	});
 
 	function prevHub() {
 		if (currentHubIndx > 0) currentHubIndx = (currentHubIndx - 1) % $pickupHubs.length;
 		else currentHubIndx = $pickupHubs.length - currentHubIndx - 1;
-		packingBoxes = findCurrentShipping($pickupHubs[currentHubIndx]).packingBoxes;
+		({packingBoxes, comment} = updateViewModel($pickupHubs[currentHubIndx]));
 	}
 
 	function nextHub() {
 		currentHubIndx = (currentHubIndx + 1) % $pickupHubs.length;
-		packingBoxes = findCurrentShipping($pickupHubs[currentHubIndx]).packingBoxes;
+		({packingBoxes, comment} = updateViewModel($pickupHubs[currentHubIndx]));
+	}
+
+	/**
+	 * @param {{ id: string; }} hub
+	 */
+	function updateViewModel(hub) {
+		const shipping = findCurrentShipping(hub);
+		return {
+			packingBoxes: shipping.packingBoxes,
+			comment: shipping.comment
+		};
 	}
 
 	function sendPackedEvent() {
 		currentShipping.packingBoxes = packingBoxes;
+		currentShipping.comment = comment;
 		nextHub();
 		// send packed event
 	}
@@ -95,6 +115,7 @@
 						<textarea
 							rows="3"
 							placeholder="Kommentar..."
+							bind:value={comment}
 							class="textarea-bordered textarea-xs w-full"
 						/>
 						<button on:click={sendPackedEvent}><CheckCircle size={32} color="#18cda9" /></button>

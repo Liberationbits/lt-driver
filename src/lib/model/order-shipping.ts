@@ -11,6 +11,7 @@ export class OrderShipping {
 	customerId: string;
 	packingBoxes: number = 0;
 	returnedBoxes: number = 0;
+	comment: string = '';
 
 	constructor(customerId: string) {
 		this.id = uuidv4();
