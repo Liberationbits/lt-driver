@@ -35,10 +35,10 @@
 	 * @param {{ id: string }} hub
 	 */
 	function findCurrentShipping(hub) {
-		const shippingFound = $orderShippings.find((os) => os.customerId == hub.id);
-		if (shippingFound) return shippingFound;
+		const foundShipping = $orderShippings.find((os) => os.customerId == hub.id);
+		if (foundShipping) return foundShipping;
 		else {
-			const freshOrderShipping = new OrderShipping($pickupHubs[currentHubIndx].id);
+			const freshOrderShipping = new OrderShipping(hub.id);
 			$orderShippings.push(freshOrderShipping);
 			return freshOrderShipping;
 		}
