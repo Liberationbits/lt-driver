@@ -21,19 +21,24 @@
 	$: currentHub = $pickupHubs[currentHubIndx];
 	$: currentShipping = findCurrentShipping(currentHub);
 	$: shippingState = currentShipping.shippingState();
-	let pickingBoxes = 0;
+	let packingBoxes = 0;
 
-	onMount(() => pickingBoxes = currentShipping.packingBoxes);
+	onMount(() => packingBoxes = currentShipping.packingBoxes);
 
 	function prevHub() {
 		if (currentHubIndx > 0) currentHubIndx = (currentHubIndx - 1) % $pickupHubs.length;
 		else currentHubIndx = $pickupHubs.length - currentHubIndx - 1;
-		pickingBoxes = currentShipping.packingBoxes
+		packingBoxes = findCurrentShipping($pickupHubs[currentHubIndx]).packingBoxes;
 	}
 
 	function nextHub() {
 		currentHubIndx = (currentHubIndx + 1) % $pickupHubs.length;
-		pickingBoxes = currentShipping.packingBoxes;
+		packingBoxes = findCurrentShipping($pickupHubs[currentHubIndx]).packingBoxes;
+	}
+
+	function sendPackedEvent() {
+		currentShipping.packingBoxes = packingBoxes;
+		// send packed event
 	}
 
 	/**
@@ -81,7 +86,7 @@
 							type="number"
 							min="0"
 							max="99"
-							bind:value={pickingBoxes}
+							bind:value={packingBoxes}
 							class="xs:w-3 input-xs"
 						/>
 					</div>
@@ -91,7 +96,7 @@
 							placeholder="Kommentar..."
 							class="textarea-bordered textarea-xs w-full"
 						/>
-						<button><CheckCircle size={32} color="#18cda9" /></button>
+						<button on:click={sendPackedEvent}><CheckCircle size={32} color="#18cda9" /></button>
 					</div>
 				{/if}
 			{:else}
