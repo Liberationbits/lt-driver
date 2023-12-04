@@ -165,7 +165,7 @@
 						/>
 						<button on:click={sendNostrEvent}><CheckCircle size={32} color="#18cda9" /></button>
 					{:else}
-						<div class="text-xs min-h-16 border border-orange-500 rounded w-full">{comment}</div>
+						<div class="min-h-16 w-full rounded border border-orange-500 text-xs">{comment}</div>
 					{/if}
 				</div>
 			{:else}
