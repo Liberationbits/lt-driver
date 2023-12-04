@@ -13,7 +13,7 @@
 	const intervalId = setInterval(() => {
 		currentDate = dayjs();
 	}, 1000);
-	const weekNumber = currentDate.week();
+	$: weekNumber = currentDate.week();
 
 	onDestroy(() => clearInterval(intervalId));
 
