@@ -17,40 +17,17 @@ if (browser) {
 	// console.log(`Using cache NDKRedisCacheAdapter`);
 }
 
-// get relays from localstorage
-let relays;
-
-try {
-	// relays = localStorage.getItem('relays');
-} catch (e) {
-	/* empty */
-}
-
-let relayList: string[] = [];
-
-if (relays) {
-	relayList = JSON.parse(relays);
-}
-
 export const defaultRelays = [
-	'wss://pablof7z.nostr1.com',
-	'wss://purplepag.es',
 	// 'ws://localhost:8080',
-
 	'wss://nos.lol',
-	//'wss://relay.f7z.io',
 	'wss://relay.damus.io',
 	'wss://relay.snort.social',
-	'wss://offchain.pub/',
 	'wss://nostr-pub.wellorder.net'
 ];
 
-if (!relayList || !Array.isArray(relayList) || relayList.length === 0) {
-	relayList = defaultRelays;
-}
-
 const _ndk: NDKSvelte = new NDKSvelte({
-	explicitRelayUrls: relayList
+	explicitRelayUrls: defaultRelays,
+	cacheAdapter
 });
 
 const ndk = writable(_ndk);
