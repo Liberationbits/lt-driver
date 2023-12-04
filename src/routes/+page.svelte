@@ -3,7 +3,7 @@
 	import { currentUser } from '$stores/current-user';
 	import { CaretDoubleLeft, CaretDoubleRight, CheckCircle } from 'phosphor-svelte';
 	import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import dayjs from 'dayjs';
 	import weekOfYear from 'dayjs/plugin/weekOfYear';
 	import { orderShippings } from '$stores/order-shippings';
@@ -21,14 +21,19 @@
 	$: currentHub = $pickupHubs[currentHubIndx];
 	$: currentShipping = findCurrentShipping(currentHub);
 	$: shippingState = currentShipping.shippingState();
+	let pickingBoxes = 0;
+
+	onMount(() => pickingBoxes = currentShipping.packingBoxes);
 
 	function prevHub() {
 		if (currentHubIndx > 0) currentHubIndx = (currentHubIndx - 1) % $pickupHubs.length;
 		else currentHubIndx = $pickupHubs.length - currentHubIndx - 1;
+		pickingBoxes = currentShipping.packingBoxes
 	}
 
 	function nextHub() {
 		currentHubIndx = (currentHubIndx + 1) % $pickupHubs.length;
+		pickingBoxes = currentShipping.packingBoxes;
 	}
 
 	/**
@@ -76,7 +81,7 @@
 							type="number"
 							min="0"
 							max="99"
-							value={currentShipping.packingBoxes}
+							bind:value={pickingBoxes}
 							class="xs:w-3 input-xs"
 						/>
 					</div>
