@@ -5,6 +5,7 @@ import NDKDexieCacheAdapter from '@nostr-dev-kit/ndk-cache-dexie';
 // import NDKRedisCacheAdapter from '@nostr-dev-kit/ndk-cache-redis';
 import { browser } from '$app/environment';
 import NDKSvelte from '@nostr-dev-kit/ndk-svelte';
+import { dev } from '$app/environment';
 
 let cacheAdapter: NDKCacheAdapter | undefined;
 
@@ -17,13 +18,14 @@ if (browser) {
 	// console.log(`Using cache NDKRedisCacheAdapter`);
 }
 
-export const defaultRelays = [
-	// 'ws://localhost:8080',
-	'wss://nos.lol',
-	'wss://relay.damus.io',
-	'wss://relay.snort.social',
-	'wss://nostr-pub.wellorder.net'
-];
+export const defaultRelays = dev
+	? ['ws://localhost:4736']
+	: [
+			'wss://nos.lol',
+			'wss://relay.damus.io',
+			'wss://relay.snort.social',
+			'wss://nostr-pub.wellorder.net'
+	  ];
 
 const _ndk: NDKSvelte = new NDKSvelte({
 	explicitRelayUrls: defaultRelays,
