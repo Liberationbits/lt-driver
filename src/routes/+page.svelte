@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { pickupHubs } from '$lib/stores/pickup-hubs';
 	import { currentUser } from '$stores/current-user';
 	import { CaretDoubleLeft, CaretDoubleRight, CheckCircle } from 'phosphor-svelte';
@@ -7,7 +7,9 @@
 	import dayjs from 'dayjs';
 	import weekOfYear from 'dayjs/plugin/weekOfYear';
 	import { orderShippings } from '$stores/order-shippings';
-	import AttentionButton from '$components/buttons/AttentionButton.svelte';
+	import { NDKEvent, type NostrEvent } from '@nostr-dev-kit/ndk';
+	import ndk from '$stores/ndk';
+	import type PickupHub from '$lib/model/pickup-hub';
 
 	dayjs.extend(weekOfYear);
 	let currentDate = dayjs();
@@ -46,10 +48,7 @@
 		({ packingBoxes, returnedBoxes, comment } = createNewViewModel($pickupHubs[currentHubIndx]));
 	}
 
-	/**
-	 * @param {{ id: string; }} hub
-	 */
-	function createNewViewModel(hub) {
+	function createNewViewModel(hub: PickupHub) {
 		const shipping = findCurrentShipping(hub);
 		return {
 			packingBoxes: shipping.packingBoxes,
@@ -58,7 +57,7 @@
 		};
 	}
 
-	function sendNostrEvent() {
+	async function sendNostrEvent() {
 		switch (currentShipping.shippingState()) {
 			case ShippingState.Packen:
 				sendPackedEvent();
@@ -71,24 +70,31 @@
 		}
 	}
 
-	function sendPackedEvent() {
+	async function sendPackedEvent() {
 		currentShipping.packingBoxes = packingBoxes;
 		currentShipping.comment = comment;
+		await sendNDKEvent(currentShipping, 32020);
 		nextHub();
-		// send packed event
 	}
 
-	function sendDeliveredEvent() {
+	async function sendDeliveredEvent() {
 		currentShipping.returnedBoxes = returnedBoxes;
 		currentShipping.comment = comment;
+		await sendNDKEvent(currentShipping, 32021);
 		nextHub();
-		// Send delivered event
 	}
 
-	/**
-	 * @param {{ id: string }} hub
-	 */
-	function findCurrentShipping(hub) {
+	async function sendNDKEvent(os: OrderShipping, kind: number) {
+		const ndkEvent = new NDKEvent($ndk);
+		ndkEvent.kind = kind;
+		ndkEvent.pubkey = $currentUser!.pubkey;
+		ndkEvent.tags.push(['d', os.id], ['p', os.customerId]);
+		ndkEvent.content = JSON.stringify(os);
+		await ndkEvent.sign();
+		await ndkEvent.publish();
+	}
+
+	function findCurrentShipping(hub: PickupHub) {
 		const foundShipping = $orderShippings.find((os) => os.customerId == hub.id);
 		if (foundShipping) return foundShipping;
 		else {
@@ -165,7 +171,7 @@
 						/>
 						<button on:click={sendNostrEvent}><CheckCircle size={32} color="#18cda9" /></button>
 					{:else}
-						<div class="min-h-16 w-full text-sm text-accent-content">{comment}</div>
+						<pre class="min-h-16 w-full text-sm text-accent-content">{comment}</pre>
 					{/if}
 				</div>
 			{:else}
