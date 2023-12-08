@@ -3,11 +3,11 @@
 	import { currentUser } from '$stores/current-user';
 	import { CaretDoubleLeft, CaretDoubleRight, CheckCircle } from 'phosphor-svelte';
 	import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
-	import { onDestroy, onMount } from 'svelte';
+	import { afterUpdate, onDestroy } from 'svelte';
 	import dayjs from 'dayjs';
 	import weekOfYear from 'dayjs/plugin/weekOfYear';
-	import { orderShippings } from '$stores/order-shippings';
-	import { NDKEvent, type NostrEvent } from '@nostr-dev-kit/ndk';
+	import { OrderShippingKind, orderShippings } from '$stores/order-shippings';
+	import { NDKEvent } from '@nostr-dev-kit/ndk';
 	import ndk from '$stores/ndk';
 	import type PickupHub from '$lib/model/pickup-hub';
 
@@ -28,32 +28,39 @@
 
 	// view model reactive variables
 	$: currentHub = $pickupHubs[currentHubIndx];
-	$: currentShipping = findCurrentShipping(currentHub);
+	$: currentShipping = findCurrentShipping(currentHub, $orderShippings);
 	$: shippingState = currentShipping.shippingState();
 
-	onMount(() => {
-		packingBoxes = currentShipping.packingBoxes;
-		comment = currentShipping.comment;
-		({ packingBoxes, returnedBoxes, comment } = createNewViewModel(currentHub));
+	function findCurrentShipping(hub: PickupHub, oss: OrderShipping[]) {
+		const foundShipping = oss.find((os) => os.customerId == hub.id);
+		if (foundShipping) return foundShipping;
+		else {
+			const freshOrderShipping = new OrderShipping(hub.id);
+			$orderShippings.push(freshOrderShipping);
+			return freshOrderShipping;
+		}
+	}
+
+	afterUpdate(() => {
+		({ packingBoxes, returnedBoxes, comment } = createNewViewModel(currentShipping));
 	});
 
 	function prevHub() {
 		if (currentHubIndx > 0) currentHubIndx = (currentHubIndx - 1) % $pickupHubs.length;
 		else currentHubIndx = $pickupHubs.length - currentHubIndx - 1;
-		({ packingBoxes, returnedBoxes, comment } = createNewViewModel($pickupHubs[currentHubIndx]));
+		({ packingBoxes, returnedBoxes, comment } = createNewViewModel(currentShipping));
 	}
 
 	function nextHub() {
 		currentHubIndx = (currentHubIndx + 1) % $pickupHubs.length;
-		({ packingBoxes, returnedBoxes, comment } = createNewViewModel($pickupHubs[currentHubIndx]));
+		({ packingBoxes, returnedBoxes, comment } = createNewViewModel(currentShipping));
 	}
 
-	function createNewViewModel(hub: PickupHub) {
-		const shipping = findCurrentShipping(hub);
+	function createNewViewModel(oss: OrderShipping) {
 		return {
-			packingBoxes: shipping.packingBoxes,
-			returnedBoxes: shipping.returnedBoxes,
-			comment: shipping.comment
+			packingBoxes: oss.packingBoxes,
+			returnedBoxes: oss.returnedBoxes,
+			comment: oss.comment
 		};
 	}
 
@@ -73,14 +80,14 @@
 	async function sendPackedEvent() {
 		currentShipping.packingBoxes = packingBoxes;
 		currentShipping.comment = comment;
-		await sendNDKEvent(currentShipping, 32020);
+		await sendNDKEvent(currentShipping, OrderShippingKind.Packed);
 		nextHub();
 	}
 
 	async function sendDeliveredEvent() {
 		currentShipping.returnedBoxes = returnedBoxes;
 		currentShipping.comment = comment;
-		await sendNDKEvent(currentShipping, 32021);
+		await sendNDKEvent(currentShipping, OrderShippingKind.Delivered);
 		nextHub();
 	}
 
@@ -92,16 +99,6 @@
 		ndkEvent.content = JSON.stringify(os);
 		await ndkEvent.sign();
 		await ndkEvent.publish();
-	}
-
-	function findCurrentShipping(hub: PickupHub) {
-		const foundShipping = $orderShippings.find((os) => os.customerId == hub.id);
-		if (foundShipping) return foundShipping;
-		else {
-			const freshOrderShipping = new OrderShipping(hub.id);
-			$orderShippings.push(freshOrderShipping);
-			return freshOrderShipping;
-		}
 	}
 </script>
 
