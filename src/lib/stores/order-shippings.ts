@@ -15,12 +15,12 @@ export const orderShippings: Writable<OrderShipping[]> = writable([]);
 const $ndk = getStore(ndk);
 
 let seenEventIds: string[] = [];
-let shippingEvents: NDKEventStore<NDKEvent> = $ndk.storeSubscribe({});
-let unsubscribeToEvents: Unsubscriber | undefined;
+let shippingEventsStore: NDKEventStore<NDKEvent> | undefined;
+let unsubscribeToEventsStore: Unsubscriber | undefined;
 
 currentUser.subscribe(($currentUser) => {
 	if ($currentUser) {
-		shippingEvents = $ndk.storeSubscribe(
+		shippingEventsStore = $ndk.storeSubscribe(
 			{
 				kinds: [OrderShippingKind.Packed, OrderShippingKind.Delivered],
 				authors: [$currentUser.pubkey],
@@ -30,7 +30,7 @@ currentUser.subscribe(($currentUser) => {
 			{ closeOnEose: false, subId: 'order-shipping-events' }
 		);
 
-		unsubscribeToEvents = shippingEvents.subscribe((events: NDKEvent[]) => {
+		unsubscribeToEventsStore = shippingEventsStore.subscribe((events: NDKEvent[]) => {
 			const relevantEvents = events.filter(
 				(e) => e.tagValue('d') && e.tagValue('p') && !seenEventIds.includes(e.id)
 			);
@@ -47,5 +47,8 @@ currentUser.subscribe(($currentUser) => {
 			orderShippings.update((oss) => shippings.concat(oss));
 			seenEventIds = relevantEvents.map((e) => e.id).concat(seenEventIds);
 		});
-	} else if (unsubscribeToEvents) unsubscribeToEvents();
+	} else {
+		shippingEventsStore?.unsubscribe();
+		if (unsubscribeToEventsStore) unsubscribeToEventsStore();
+	}
 });

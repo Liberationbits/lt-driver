@@ -22,48 +22,45 @@
 
 	// view model
 	let currentHubIndx = 0;
-	let packingBoxes = 0;
-	let returnedBoxes = 0;
-	let comment = '';
+	let currentHub = $pickupHubs[currentHubIndx];
+	let currentShipping = findCurrentShipping(currentHub, $orderShippings);
+	let shippingState = currentShipping.shippingState();
+	let packingBoxes = currentShipping.packingBoxes;
+	let returnedBoxes = currentShipping.returnedBoxes;
+	let comment = currentShipping.comment;
 
-	// view model reactive variables
-	$: currentHub = $pickupHubs[currentHubIndx];
-	$: currentShipping = findCurrentShipping(currentHub, $orderShippings);
-	$: shippingState = currentShipping.shippingState();
+	$: updateViewModel(currentHubIndx, $orderShippings);
 
 	function findCurrentShipping(hub: PickupHub, oss: OrderShipping[]) {
 		const foundShipping = oss.find((os) => os.customerId == hub.id);
 		if (foundShipping) return foundShipping;
 		else {
 			const freshOrderShipping = new OrderShipping(hub.id);
-			$orderShippings.push(freshOrderShipping);
 			return freshOrderShipping;
 		}
 	}
 
-	afterUpdate(() => {
-		({ packingBoxes, returnedBoxes, comment } = createNewViewModel(currentShipping));
-	});
-
 	function prevHub() {
 		if (currentHubIndx > 0) currentHubIndx = (currentHubIndx - 1) % $pickupHubs.length;
 		else currentHubIndx = $pickupHubs.length - currentHubIndx - 1;
-		({ packingBoxes, returnedBoxes, comment } = createNewViewModel(currentShipping));
+		updateViewModel(currentHubIndx);
 	}
 
 	function nextHub() {
 		currentHubIndx = (currentHubIndx + 1) % $pickupHubs.length;
-		({ packingBoxes, returnedBoxes, comment } = createNewViewModel(currentShipping));
+		updateViewModel(currentHubIndx);
 	}
 
-	function createNewViewModel(oss: OrderShipping) {
-		return {
-			packingBoxes: oss.packingBoxes,
-			returnedBoxes: oss.returnedBoxes,
-			comment: oss.comment
-		};
+	function updateViewModel(hubIdx: number, oss: OrderShipping[] = $orderShippings) {
+		currentHub = $pickupHubs[hubIdx];
+		currentShipping = findCurrentShipping(currentHub, $orderShippings);
+		shippingState = currentShipping.shippingState();
+		packingBoxes = currentShipping.packingBoxes;
+		returnedBoxes = currentShipping.returnedBoxes;
+		comment = currentShipping.comment;
 	}
 
+	// write operations
 	async function sendNostrEvent() {
 		switch (currentShipping.shippingState()) {
 			case ShippingState.Packen:
