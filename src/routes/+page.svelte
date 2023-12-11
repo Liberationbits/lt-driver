@@ -31,6 +31,15 @@
 
 	$: updateViewModel(currentHubIndx, $orderShippings);
 
+	function updateViewModel(hubIdx: number, oss: OrderShipping[]) {
+		currentHub = $pickupHubs[hubIdx];
+		currentShipping = findCurrentShipping(currentHub, oss);
+		shippingState = currentShipping.shippingState();
+		packingBoxes = currentShipping.packingBoxes;
+		returnedBoxes = currentShipping.returnedBoxes;
+		comment = currentShipping.comment;
+	}
+
 	function findCurrentShipping(hub: PickupHub, oss: OrderShipping[]) {
 		const foundShipping = oss.find((os) => os.customerId == hub.id);
 		if (foundShipping) return foundShipping;
@@ -43,21 +52,10 @@
 	function prevHub() {
 		if (currentHubIndx > 0) currentHubIndx = (currentHubIndx - 1) % $pickupHubs.length;
 		else currentHubIndx = $pickupHubs.length - currentHubIndx - 1;
-		updateViewModel(currentHubIndx);
 	}
 
 	function nextHub() {
 		currentHubIndx = (currentHubIndx + 1) % $pickupHubs.length;
-		updateViewModel(currentHubIndx);
-	}
-
-	function updateViewModel(hubIdx: number, oss: OrderShipping[] = $orderShippings) {
-		currentHub = $pickupHubs[hubIdx];
-		currentShipping = findCurrentShipping(currentHub, oss);
-		shippingState = currentShipping.shippingState();
-		packingBoxes = currentShipping.packingBoxes;
-		returnedBoxes = currentShipping.returnedBoxes;
-		comment = currentShipping.comment;
 	}
 
 	// write operations
