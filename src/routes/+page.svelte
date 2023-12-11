@@ -3,13 +3,12 @@
 	import { currentUser } from '$stores/current-user';
 	import { CaretDoubleLeft, CaretDoubleRight, CheckCircle } from 'phosphor-svelte';
 	import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
-	import { afterUpdate, onDestroy } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import dayjs from 'dayjs';
 	import weekOfYear from 'dayjs/plugin/weekOfYear';
-	import { OrderShippingKind, orderShippings } from '$stores/order-shippings';
-	import { NDKEvent } from '@nostr-dev-kit/ndk';
-	import ndk from '$stores/ndk';
+	import { orderShippings } from '$stores/order-shippings';
 	import type PickupHub from '$lib/model/pickup-hub';
+	import { storeOrderShipping } from '$utils/order-shipping';
 
 	dayjs.extend(weekOfYear);
 	let currentDate = dayjs();
@@ -58,24 +57,12 @@
 		currentHubIndx = (currentHubIndx + 1) % $pickupHubs.length;
 	}
 
-	// write operations
 	async function storeState() {
 		currentShipping.packingBoxes = packingBoxes;
 		currentShipping.returnedBoxes = returnedBoxes;
 		currentShipping.comment = comment;
-		await sendNDKEvent(currentShipping);
+		await storeOrderShipping(currentShipping, shippingState);
 		nextHub();
-	}
-
-	async function sendNDKEvent(os: OrderShipping) {
-		const kind = os.shippingState() == ShippingState.Packen ? OrderShippingKind.Packed : OrderShippingKind.Delivered;
-		const ndkEvent = new NDKEvent($ndk);
-		ndkEvent.kind = kind;
-		ndkEvent.pubkey = $currentUser!.pubkey;
-		ndkEvent.tags.push(['d', os.id], ['p', os.customerId]);
-		ndkEvent.content = JSON.stringify(os);
-		await ndkEvent.sign();
-		await ndkEvent.publish();
 	}
 </script>
 
