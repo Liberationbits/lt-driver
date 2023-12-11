@@ -59,34 +59,16 @@
 	}
 
 	// write operations
-	async function sendNostrEvent() {
-		switch (currentShipping.shippingState()) {
-			case ShippingState.Packen:
-				sendPackedEvent();
-				return;
-			case ShippingState.Liefern:
-				sendDeliveredEvent();
-				return;
-			default:
-				console.log('Error: unexpected ShippingState');
-		}
-	}
-
-	async function sendPackedEvent() {
+	async function storeState() {
 		currentShipping.packingBoxes = packingBoxes;
-		currentShipping.comment = comment;
-		await sendNDKEvent(currentShipping, OrderShippingKind.Packed);
-		nextHub();
-	}
-
-	async function sendDeliveredEvent() {
 		currentShipping.returnedBoxes = returnedBoxes;
 		currentShipping.comment = comment;
-		await sendNDKEvent(currentShipping, OrderShippingKind.Delivered);
+		await sendNDKEvent(currentShipping);
 		nextHub();
 	}
 
-	async function sendNDKEvent(os: OrderShipping, kind: number) {
+	async function sendNDKEvent(os: OrderShipping) {
+		const kind = os.shippingState() == ShippingState.Packen ? OrderShippingKind.Packed : OrderShippingKind.Delivered;
 		const ndkEvent = new NDKEvent($ndk);
 		ndkEvent.kind = kind;
 		ndkEvent.pubkey = $currentUser!.pubkey;
@@ -161,7 +143,7 @@
 							bind:value={comment}
 							class="textarea-bordered textarea-xs w-full"
 						/>
-						<button on:click={sendNostrEvent}><CheckCircle size={32} color="#18cda9" /></button>
+						<button on:click={storeState}><CheckCircle size={32} color="#18cda9" /></button>
 					{:else}
 						<pre class="min-h-16 w-full text-sm text-accent-content">{comment}</pre>
 					{/if}
