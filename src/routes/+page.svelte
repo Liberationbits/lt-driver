@@ -53,7 +53,7 @@
 
 	function updateViewModel(hubIdx: number, oss: OrderShipping[] = $orderShippings) {
 		currentHub = $pickupHubs[hubIdx];
-		currentShipping = findCurrentShipping(currentHub, $orderShippings);
+		currentShipping = findCurrentShipping(currentHub, oss);
 		shippingState = currentShipping.shippingState();
 		packingBoxes = currentShipping.packingBoxes;
 		returnedBoxes = currentShipping.returnedBoxes;
