@@ -13,8 +13,8 @@ export class OrderShipping {
 	returnedBoxes: number = 0;
 	comment: string = '';
 
-	constructor(customerId: string) {
-		this.id = uuidv4();
+	constructor(customerId: string, id: string = uuidv4()) {
+		this.id = id;
 		this.customerId = customerId;
 	}
 

@@ -30,13 +30,12 @@ currentUser.subscribe(($currentUser) => {
 			{ closeOnEose: false, subId: 'order-shipping-events' }
 		);
 
-		unsubscribeToEventsStore = shippingEventsStore.subscribe((events: NDKEvent[]) => {
-			const relevantEvents = events.filter(
+		unsubscribeToEventsStore = shippingEventsStore.subscribe(events => {
+			const nonseenEvents = events.filter(
 				(e) => e.tagValue('d') && e.tagValue('p') && !seenEventIds.includes(e.id)
 			);
-			const shippings = relevantEvents.map((event) => {
-				const shipping = new OrderShipping(event.tagValue('p')!);
-				shipping.id = event.tagValue('d')!;
+			const shippings = nonseenEvents.map(event => {
+				const shipping = new OrderShipping(event.tagValue('p')!, event.tagValue('d')!);
 				const json = JSON.parse(event.content);
 				shipping.packingBoxes = json.packingBoxes;
 				shipping.returnedBoxes = json.returnedBoxes;
@@ -45,7 +44,7 @@ currentUser.subscribe(($currentUser) => {
 			});
 			// todo: filter out shippings of an inferior state
 			orderShippings.update((oss) => shippings.concat(oss));
-			seenEventIds = relevantEvents.map((e) => e.id).concat(seenEventIds);
+			seenEventIds = nonseenEvents.map((e) => e.id).concat(seenEventIds);
 		});
 	} else {
 		shippingEventsStore?.unsubscribe();
