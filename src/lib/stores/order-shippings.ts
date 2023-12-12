@@ -10,7 +10,7 @@ export enum OrderShippingKind {
 	Delivered = 32021
 }
 
-export const orderShippings: Writable<OrderShipping[]> = writable([]);
+export const orderShippingsStore: Writable<OrderShipping[]> = writable([]);
 
 const $ndk = getStore(ndk);
 
@@ -43,7 +43,7 @@ currentUser.subscribe(($currentUser) => {
 				return shipping;
 			});
 			// todo: filter out shippings of an inferior state
-			orderShippings.update((oss) => shippings.concat(oss));
+			orderShippingsStore.update((oss) => shippings.concat(oss));
 			seenEventIds = nonseenEvents.map((e) => e.id).concat(seenEventIds);
 		});
 	} else {

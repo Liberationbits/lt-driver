@@ -6,7 +6,7 @@
 	import { onDestroy } from 'svelte';
 	import dayjs from 'dayjs';
 	import weekOfYear from 'dayjs/plugin/weekOfYear';
-	import { orderShippings } from '$stores/order-shippings';
+	import { orderShippingsStore } from '$stores/order-shippings';
 	import type PickupHub from '$lib/model/pickup-hub';
 	import { storeOrderShipping } from '$utils/order-shipping';
 
@@ -22,13 +22,13 @@
 	// view model
 	let currentHubIndx = 0;
 	let currentHub = $pickupHubs[currentHubIndx];
-	let currentShipping = findCurrentShipping(currentHub, $orderShippings);
+	let currentShipping = findCurrentShipping(currentHub, $orderShippingsStore);
 	let shippingState = currentShipping.shippingState();
 	let packingBoxes = currentShipping.packingBoxes;
 	let returnedBoxes = currentShipping.returnedBoxes;
 	let comment = currentShipping.comment;
 
-	$: updateViewModel(currentHubIndx, $orderShippings);
+	$: updateViewModel(currentHubIndx, $orderShippingsStore);
 
 	function updateViewModel(hubIdx: number, oss: OrderShipping[]) {
 		currentHub = $pickupHubs[hubIdx];
