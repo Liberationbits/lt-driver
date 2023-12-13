@@ -6,9 +6,9 @@ import { OrderShippingKind } from '$stores/order-shippings';
 import { NDKEvent } from '@nostr-dev-kit/ndk';
 import { get as getStore } from 'svelte/store';
 
-export async function storeOrderShipping(os: OrderShipping, shippingState: ShippingState) {
+export async function storeOrderShipping(os: OrderShipping, currentState: ShippingState) {
 	const kind =
-		shippingState == ShippingState.Packen ? OrderShippingKind.Packed : OrderShippingKind.Delivered;
+		currentState == ShippingState.Packen ? OrderShippingKind.Packed : OrderShippingKind.Delivered;
 	const ndkEvent = new NDKEvent(getStore(ndk));
 	ndkEvent.kind = kind;
 	ndkEvent.pubkey = getStore(currentUser)!.pubkey;
