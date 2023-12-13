@@ -45,35 +45,37 @@ currentUser.subscribe(($currentUser) => {
 type ShippingsESHandler = (es: NDKEvent[], oss: OrderShipping[]) => OrderShipping[];
 
 const shippingsESHandler: ShippingsESHandler = (es, oss) => {
-	function isValidShippingUpdate(e: NDKEvent, os: OrderShipping) {
+	function isValidShippingUpdate(e: NDKEvent, os: OrderShipping): boolean {
 		const eventShippingState =
 			e.kind == OrderShippingKind.Packed ? ShippingState.Liefern : ShippingState.Abgeschlossen;
 		if (os.customerId != e.tagValue('p')!) return false;
 		else if (os.shippingState() >= eventShippingState) return false;
 		else return true;
 	}
-	function deserialize(json: string, os: OrderShipping) {
+	function deserialize(json: string): OrderShipping {
 		const jsonObj = JSON.parse(json);
-		os.packingBoxes = jsonObj.packingBoxes;
-		os.returnedBoxes = jsonObj.returnedBoxes;
-		os.comment = jsonObj.comment;
+		const nos = new OrderShipping(jsonObj.customerId, jsonObj.id);
+		nos.packingBoxes = jsonObj.packingBoxes;
+		nos.returnedBoxes = jsonObj.returnedBoxes;
+		nos.comment = jsonObj.comment;
+		return nos;
 	}
 
 	for (const e of es.filter((e) => e.tagValue('d') && e.tagValue('p'))) {
 		const existingOrderShipping = oss.find((os) => os.id == e.tagValue('d')!);
 		if (existingOrderShipping) {
-			if (isValidShippingUpdate(e, existingOrderShipping)) {
-				deserialize(e.content, existingOrderShipping);
-			} else {
-				const message = 'Error: got ...';
+			if (isValidShippingUpdate(e, existingOrderShipping))
+				existingOrderShipping.update(deserialize(e.content));
+			else {
+				const message =
+					'Error: got invalid event update,\n Event: ' +
+					e +
+					'\n For OrderShipping: ' +
+					existingOrderShipping;
 				console.error(message);
 				alert(message); // todo: use error component
 			}
-		} else {
-			const newOrderShipping = new OrderShipping(e.tagValue('p')!, e.tagValue('d')!);
-			deserialize(e.content, newOrderShipping);
-			oss.unshift(newOrderShipping);
-		}
+		} else oss.unshift(deserialize(e.content));
 	}
 	return oss;
 };

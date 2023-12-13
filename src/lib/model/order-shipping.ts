@@ -23,6 +23,14 @@ export class OrderShipping {
 		else if (this.packingBoxes > 0) return ShippingState.Liefern;
 		else return ShippingState.Packen;
 	}
+
+	update(other: OrderShipping) {
+		if (!other || other.id != this.id || other.customerId != this.customerId)
+			throw new Error('The other OrderShipping has a different identity: ' + other);
+		this.packingBoxes = other.packingBoxes;
+		this.returnedBoxes = other.returnedBoxes;
+		this.comment = other.comment;
+	}
 }
 
 export default OrderShipping;
