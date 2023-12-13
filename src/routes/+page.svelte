@@ -58,10 +58,11 @@
 	}
 
 	async function storeState() {
-		currentShipping.packingBoxes = packingBoxes;
-		currentShipping.returnedBoxes = returnedBoxes;
-		currentShipping.comment = comment;
-		await storeOrderShipping(currentShipping, shippingState);
+		const newShipping = new OrderShipping(currentShipping.customerId, currentShipping.id);
+		newShipping.packingBoxes = packingBoxes;
+		newShipping.returnedBoxes = returnedBoxes;
+		newShipping.comment = comment;
+		await storeOrderShipping(newShipping, shippingState);
 		nextHub();
 	}
 </script>
