@@ -137,7 +137,7 @@
 					{/if}
 				</div>
 			{:else}
-				<p class="text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl">
+				<p class="text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl text-orange-500">
 					Bitte einloggen!
 				</p>
 			{/if}
