@@ -3,21 +3,9 @@
 	import { currentUser } from '$stores/current-user';
 	import { CaretDoubleLeft, CaretDoubleRight, CheckCircle } from 'phosphor-svelte';
 	import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
-	import { onDestroy } from 'svelte';
-	import dayjs from 'dayjs';
-	import weekOfYear from 'dayjs/plugin/weekOfYear';
 	import { orderShippingsStore } from '$stores/order-shippings';
 	import type PickupHub from '$lib/model/pickup-hub';
 	import { storeOrderShipping } from '$utils/order-shipping';
-
-	dayjs.extend(weekOfYear);
-	let currentDate = dayjs();
-	const intervalId = setInterval(() => {
-		currentDate = dayjs();
-	}, 1000);
-	$: weekNumber = currentDate.week();
-
-	onDestroy(() => clearInterval(intervalId));
 
 	// view model
 	let currentHubIndx = 0;
@@ -79,9 +67,6 @@
 			{#if $currentUser}
 				<div class="text-center tracking-wider text-orange-500 sm:text-2xl md:text-3xl lg:text-4xl">
 					{ShippingState[shippingState]}
-				</div>
-				<div class="text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl">
-					KW {weekNumber} - {currentDate.format('DD.MM.YYYY HH:mm:ss')}
 				</div>
 				<div
 					class="flex flex-row gap-3 self-center text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl"

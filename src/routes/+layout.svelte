@@ -1,10 +1,12 @@
 <script lang="ts">
 	import ndk from '$stores/ndk';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import '../app.postcss';
 	import { NDKNip07Signer } from '@nostr-dev-kit/ndk';
 	import { currentUser } from '$stores/current-user';
 	import Navbar from '$components/Navbar.svelte';
+	import dayjs from 'dayjs';
+	import weekOfYear from 'dayjs/plugin/weekOfYear';
 
 	onMount(async () => {
 		try {
@@ -17,6 +19,15 @@
 			console.error(`layout error`, e);
 		}
 	});
+
+	dayjs.extend(weekOfYear);
+	let currentDate = dayjs();
+	const intervalId = setInterval(() => {
+		currentDate = dayjs();
+	}, 1000);
+	$: weekNumber = currentDate.week();
+
+	onDestroy(() => clearInterval(intervalId));
 
 	async function login() {
 		$ndk.signer = new NDKNip07Signer();
@@ -38,6 +49,10 @@
 </script>
 
 <Navbar />
+
+<div class="text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl">
+	KW {weekNumber} - {currentDate.format('DD.MM.YYYY HH:mm:ss')}
+</div>
 
 <div class="mx-auto">
 	<slot />
