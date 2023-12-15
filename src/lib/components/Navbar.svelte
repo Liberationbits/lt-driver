@@ -1,7 +1,11 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { profileName } from '$stores/current-user';
 	import CurrentUser from './CurrentUser.svelte';
 	import { Truck } from 'phosphor-svelte';
+
+	$: route = $page.url.pathname;
+	$: pageTitle = route == '/' ? 'Liefertour' : 'Liefertour Live';
 </script>
 
 <div class="navbar mb-2 bg-base-100">
@@ -13,11 +17,13 @@
 
 	<div class="navbar-center">
 		<h1 class="font-bol ml-1 mr-1 text-base normal-case md:text-xl">
-			Liefertour{$profileName}
+			{pageTitle}{$profileName}
 		</h1>
 	</div>
 
 	<div class="navbar-end ml-1 flex flex-row items-center gap-4">
-		<CurrentUser />
+		{#if route == '/'}
+			<CurrentUser />
+		{/if}
 	</div>
 </div>
