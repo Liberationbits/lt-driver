@@ -55,5 +55,13 @@
 </div>
 
 <div class="mx-auto">
-	<slot />
+	<div class="flex flex-col gap-12">
+		<section
+			class="mx-2 flex flex-col items-center justify-center gap-8 md:h-[50vh] md:flex-row lg:mx-auto"
+		>
+			<div class="flex w-full flex-col gap-3">
+				<slot />
+			</div>
+		</section>
+	</div>
 </div>
