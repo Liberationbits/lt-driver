@@ -1,14 +1,16 @@
 <script lang="ts">
-	import type { ShippingState } from '$lib/model/order-shipping';
+	import { ShippingState } from '$lib/model/order-shipping';
 	import { orderShippingAndEventsStore } from '$stores/order-shippings';
 	import { pickupHubs } from '$stores/pickup-hubs';
+	import dayjs from 'dayjs';
 
 	type HubShipping = {
 		hubCode: string;
 		members: number;
 		portions: number;
 		state: ShippingState;
-		time: number;
+		stateColorClass: string;
+		time: string;
 		comment: string;
 	};
 
@@ -18,12 +20,16 @@
 
 	$: hubShippings = knownOrderShippingAndEvents.map<HubShipping>((ose) => {
 		const hub = $pickupHubs.find((h) => h.id == ose.orderShipping.customerId);
+		const state = ose.orderShipping.shippingState();
 		return {
 			hubCode: hub?.code!,
 			members: hub?.membersCount!,
 			portions: hub?.portions!,
-			state: ose.orderShipping.shippingState(),
-			time: ose.event.created_at ? ose.event.created_at : 0,
+			state: state,
+			stateColorClass: state == ShippingState.Liefern ? 'text-yellow-500' : 'text-green-500',
+			time: ose.event.created_at
+				? dayjs(ose.event.created_at * 1000).format('DD.MM.YY HH:mm:ss')
+				: '---',
 			comment: ose.orderShipping.comment
 		};
 	});
@@ -34,7 +40,7 @@
 </svelte:head>
 
 <div class="overflow-x-auto">
-	<table class="table">
+	<table class="table-xs text-xs">
 		<!-- head -->
 		<thead>
 			<tr>
@@ -50,9 +56,9 @@
 				<tr>
 					<td>{hs.hubCode}</td>
 					<td>{hs.members}|{hs.portions}</td>
-					<td>{hs.state}</td>
+					<td class={hs.stateColorClass}>{ShippingState[hs.state]}</td>
 					<td>{hs.time}</td>
-					<td>{hs.comment}</td>
+					<td><pre>{hs.comment}</pre></td>
 				</tr>
 			{/each}
 		</tbody>

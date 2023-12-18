@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 export enum ShippingState {
 	Packen, // packing
 	Liefern, // delivering
-	Abgeschlossen // finished
+	Geliefert // delivered
 }
 
 export class OrderShipping {
@@ -19,7 +19,7 @@ export class OrderShipping {
 	}
 
 	shippingState(): ShippingState {
-		if (this.returnedBoxes > 0) return ShippingState.Abgeschlossen;
+		if (this.returnedBoxes > 0) return ShippingState.Geliefert;
 		else if (this.packingBoxes > 0) return ShippingState.Liefern;
 		else return ShippingState.Packen;
 	}

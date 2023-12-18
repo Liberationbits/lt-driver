@@ -104,7 +104,7 @@
 		{/if}
 	</div>
 	<div class="m-2 flex items-center gap-3">
-		{#if shippingState != ShippingState.Abgeschlossen}
+		{#if shippingState != ShippingState.Geliefert}
 			<textarea
 				rows="3"
 				placeholder="Kommentar..."

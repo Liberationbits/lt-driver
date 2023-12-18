@@ -1,11 +1,5 @@
 import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
-import {
-	get as getStore,
-	writable,
-	derived,
-	type Writable,
-	type Readable
-} from 'svelte/store';
+import { get as getStore, writable, derived, type Writable, type Readable } from 'svelte/store';
 import ndk from '$stores/ndk';
 import type { NDKEvent, NDKFilter } from '@nostr-dev-kit/ndk';
 
@@ -44,7 +38,7 @@ type ShippingsESHandler = (es: NDKEvent[], oss: OrderShippingAndEvent[]) => Orde
 const shippingsESHandler: ShippingsESHandler = (es, oss) => {
 	function isValidShippingUpdate(e: NDKEvent, os: OrderShipping): boolean {
 		const eventShippingState =
-			e.kind == OrderShippingKind.Packed ? ShippingState.Liefern : ShippingState.Abgeschlossen;
+			e.kind == OrderShippingKind.Packed ? ShippingState.Liefern : ShippingState.Geliefert;
 		if (os.customerId != e.tagValue('p')!) return false;
 		else if (os.shippingState() >= eventShippingState) return false;
 		else return true;
