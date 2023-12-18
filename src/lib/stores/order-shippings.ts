@@ -3,14 +3,11 @@ import {
 	get as getStore,
 	writable,
 	derived,
-	type Unsubscriber,
 	type Writable,
 	type Readable
 } from 'svelte/store';
 import ndk from '$stores/ndk';
-import { currentUser } from '$stores/current-user';
 import type { NDKEvent, NDKFilter } from '@nostr-dev-kit/ndk';
-import type { NDKEventStore } from '@nostr-dev-kit/ndk-svelte';
 
 export enum OrderShippingKind {
 	Packed = 32020,
@@ -30,34 +27,17 @@ export const orderShippingsStore: Readable<OrderShipping[]> = derived(
 );
 
 const $ndk = getStore(ndk);
+const drivers = ['71df211931d26ee41121d295bd43cbc7e382505e333b5c13d4016ced9542d9d7']; // todo: include other drivers
 
-let seenEventIds: string[] = [];
-let shippingEventsStore: NDKEventStore<NDKEvent> | undefined;
-let unsubscribeToEventsStore: Unsubscriber | undefined;
-
-currentUser.subscribe(($currentUser) => {
-	if ($currentUser) {
-		const drivers = [$currentUser.pubkey]; // todo: include other drivers
-		shippingEventsStore = $ndk.storeSubscribe(
-			{
-				kinds: [OrderShippingKind.Packed, OrderShippingKind.Delivered],
-				authors: drivers,
-				since: Math.floor(Date.now() / 1000) - 60 * 60 * 24 * 7,
-				limit: 100
-			} as NDKFilter<number>,
-			{ closeOnEose: false, subId: 'order-shipping-events' }
-		);
-
-		unsubscribeToEventsStore = shippingEventsStore.subscribe((events) => {
-			const nonseenEvents = events.filter((e) => !seenEventIds.includes(e.id));
-			orderShippingAndEventsStore.update((oss) => shippingsESHandler(nonseenEvents, oss));
-			seenEventIds = nonseenEvents.map((e) => e.id).concat(seenEventIds);
-		});
-	} else {
-		shippingEventsStore?.unsubscribe();
-		if (unsubscribeToEventsStore) unsubscribeToEventsStore();
-	}
-});
+const shippingEventsStore = $ndk.storeSubscribe(
+	{
+		kinds: [OrderShippingKind.Packed, OrderShippingKind.Delivered],
+		authors: drivers,
+		since: Math.floor(Date.now() / 1000) - 60 * 60 * 24 * 7,
+		limit: 100
+	} as NDKFilter<number>,
+	{ closeOnEose: false, subId: 'order-shipping-events' }
+);
 
 type ShippingsESHandler = (es: NDKEvent[], oss: OrderShippingAndEvent[]) => OrderShippingAndEvent[];
 
@@ -97,3 +77,11 @@ const shippingsESHandler: ShippingsESHandler = (es, oss) => {
 	}
 	return oss;
 };
+
+let seenEventIds: string[] = [];
+
+shippingEventsStore.subscribe((events) => {
+	const nonseenEvents = events.filter((e) => !seenEventIds.includes(e.id));
+	orderShippingAndEventsStore.update((oss) => shippingsESHandler(nonseenEvents, oss));
+	seenEventIds = nonseenEvents.map((e) => e.id).concat(seenEventIds);
+});
