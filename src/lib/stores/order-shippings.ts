@@ -1,5 +1,12 @@
 import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
-import { get as getStore, writable, type Unsubscriber, type Writable } from 'svelte/store';
+import {
+	get as getStore,
+	writable,
+	derived,
+	type Unsubscriber,
+	type Writable,
+	type Readable
+} from 'svelte/store';
 import ndk from '$stores/ndk';
 import { currentUser } from '$stores/current-user';
 import type { NDKEvent, NDKFilter } from '@nostr-dev-kit/ndk';
@@ -10,7 +17,17 @@ export enum OrderShippingKind {
 	Delivered = 32021
 }
 
-export const orderShippingsStore: Writable<OrderShipping[]> = writable([]);
+export type OrderShippingAndEvent = {
+	orderShipping: OrderShipping;
+	event: NDKEvent;
+};
+
+export const orderShippingAndEventsStore: Writable<OrderShippingAndEvent[]> = writable([]);
+
+export const orderShippingsStore: Readable<OrderShipping[]> = derived(
+	orderShippingAndEventsStore,
+	(oss) => oss.map((oscr) => oscr.orderShipping)
+);
 
 const $ndk = getStore(ndk);
 
@@ -33,7 +50,7 @@ currentUser.subscribe(($currentUser) => {
 
 		unsubscribeToEventsStore = shippingEventsStore.subscribe((events) => {
 			const nonseenEvents = events.filter((e) => !seenEventIds.includes(e.id));
-			orderShippingsStore.update((oss) => shippingsESHandler(nonseenEvents, oss));
+			orderShippingAndEventsStore.update((oss) => shippingsESHandler(nonseenEvents, oss));
 			seenEventIds = nonseenEvents.map((e) => e.id).concat(seenEventIds);
 		});
 	} else {
@@ -42,7 +59,7 @@ currentUser.subscribe(($currentUser) => {
 	}
 });
 
-type ShippingsESHandler = (es: NDKEvent[], oss: OrderShipping[]) => OrderShipping[];
+type ShippingsESHandler = (es: NDKEvent[], oss: OrderShippingAndEvent[]) => OrderShippingAndEvent[];
 
 const shippingsESHandler: ShippingsESHandler = (es, oss) => {
 	function isValidShippingUpdate(e: NDKEvent, os: OrderShipping): boolean {
@@ -62,11 +79,12 @@ const shippingsESHandler: ShippingsESHandler = (es, oss) => {
 	}
 
 	for (const e of es.filter((e) => e.tagValue('d') && e.tagValue('p'))) {
-		const existingOrderShipping = oss.find((os) => os.id == e.tagValue('d')!);
+		const existingOrderShipping = oss.find((os) => os.orderShipping.id == e.tagValue('d')!);
 		if (existingOrderShipping) {
-			if (isValidShippingUpdate(e, existingOrderShipping))
-				existingOrderShipping.update(deserialize(e.content));
-			else {
+			if (isValidShippingUpdate(e, existingOrderShipping.orderShipping)) {
+				existingOrderShipping.orderShipping.update(deserialize(e.content));
+				existingOrderShipping.event = e;
+			} else {
 				const message =
 					'Error: got invalid event update,\n Event: ' +
 					e +
@@ -75,7 +93,7 @@ const shippingsESHandler: ShippingsESHandler = (es, oss) => {
 				console.error(message);
 				alert(message); // todo: use error component
 			}
-		} else oss.unshift(deserialize(e.content));
+		} else oss.unshift({ orderShipping: deserialize(e.content), event: e });
 	}
 	return oss;
 };
