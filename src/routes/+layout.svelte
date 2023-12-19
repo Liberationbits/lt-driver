@@ -50,7 +50,7 @@
 
 <Navbar />
 
-<div class="text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl">
+<div class="text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl my-2">
 	KW {weekNumber} - {currentDate.format('DD.MM.YYYY HH:mm:ss')}
 </div>
 
