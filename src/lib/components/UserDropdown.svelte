@@ -1,13 +1,15 @@
 <script lang="ts">
 	import CollapsableDropdown from '$lib/components/CollapsableDropdown.svelte';
 	import Avatar from './Avatar.svelte';
-	import { currentUser } from '$stores/current-user';
+	import { currentUser, profileName } from '$stores/current-user';
 	import ndk from '$lib/stores/ndk';
 	import GearIcon from '$lib/icons/Gear.svelte';
 	import Notification from './Notification.svelte';
 	import { Name } from '@nostr-dev-kit/ndk-svelte-components';
 	import SubtleButton from './buttons/SubtleButton.svelte';
 	import { get as getStore } from 'svelte/store';
+	import { openModal } from 'svelte-modals';
+	import UserProfileEditorModal from './modals/UserProfileEditorModal.svelte';
 
 	export function logout(): void {
 		const $ndk = getStore(ndk);
@@ -51,7 +53,9 @@
 						/>
 					</div>
 				</div>
-				<GearIcon />
+				<button on:click={() => openModal(UserProfileEditorModal, {userName: $profileName}, {replace: true})}>
+					<GearIcon />
+				</button>
 			</div>
 		</div>
 		<div class="hidden px-5 py-4">

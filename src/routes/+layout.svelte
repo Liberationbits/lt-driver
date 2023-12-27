@@ -7,6 +7,7 @@
 	import Navbar from '$components/Navbar.svelte';
 	import dayjs from 'dayjs';
 	import weekOfYear from 'dayjs/plugin/weekOfYear';
+	import { Modals } from 'svelte-modals';
 
 	onMount(async () => {
 		try {
@@ -49,6 +50,13 @@
 </script>
 
 <Navbar />
+
+<Modals>
+	<div
+	slot="backdrop"
+	role="none"
+	/>
+</Modals>
 
 <div class="text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl my-2">
 	KW {weekNumber} - {currentDate.format('DD.MM.YYYY HH:mm:ss')}
