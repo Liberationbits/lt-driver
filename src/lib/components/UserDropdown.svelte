@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CollapsableDropdown from '$lib/components/CollapsableDropdown.svelte';
 	import Avatar from './Avatar.svelte';
-	import { currentUser, profileName } from '$stores/current-user';
+	import { currentUser, profileData } from '$stores/current-user';
 	import ndk from '$lib/stores/ndk';
 	import GearIcon from '$lib/icons/Gear.svelte';
 	import Notification from './Notification.svelte';
@@ -53,7 +53,7 @@
 						/>
 					</div>
 				</div>
-				<button on:click={() => openModal(UserProfileEditorModal, {userName: $profileName}, {replace: true})}>
+				<button on:click={() => openModal(UserProfileEditorModal, {userName: $profileData.name, imageURL: $profileData.imageUrl}, {replace: true})}>
 					<GearIcon />
 				</button>
 			</div>

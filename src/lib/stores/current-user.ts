@@ -3,7 +3,14 @@ import { derived, writable } from 'svelte/store';
 
 export const currentUser = writable<NDKUser | undefined>(undefined);
 
-export const profileName = derived(
+export type ProfileData = {
+	name: string;
+	imageUrl: string;
+}
+
+const defaultProfle: ProfileData = { name: '', imageUrl: ''}
+
+export const profileData = derived(
 	currentUser,
 	($currentUser, set) => {
 		if ($currentUser) {
@@ -11,16 +18,20 @@ export const profileName = derived(
 				.fetchProfile()
 				.then(() => {
 					const name = $currentUser?.profile?.name;
-					set(name ? ' - ' + name : '');
+					const image = $currentUser?.profile?.image;
+					set({
+						name: name ? ' - ' + name : '',
+						imageUrl: image ? image : ''
+				});
 				})
 				.catch((error) => {
 					console.error('Error fetching user profile: ' + error);
-					set('');
+					set(defaultProfle);
 					// todo: additionally show error to user
 				});
 		} else {
-			set('');
+			set(defaultProfle);
 		}
 	},
-	''
+	defaultProfle
 );

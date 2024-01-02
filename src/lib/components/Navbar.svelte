@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { profileName } from '$stores/current-user';
+	import { profileData } from '$stores/current-user';
 	import CurrentUser from './CurrentUser.svelte';
 	import { Truck } from 'phosphor-svelte';
 
@@ -17,7 +17,7 @@
 
 	<div class="navbar-center">
 		<h1 class="font-bol ml-1 mr-1 text-base normal-case md:text-xl">
-			{pageTitle}{$profileName}
+			{pageTitle}{$profileData.name}
 		</h1>
 	</div>
 
