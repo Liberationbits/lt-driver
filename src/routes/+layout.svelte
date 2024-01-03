@@ -52,13 +52,10 @@
 <Navbar />
 
 <Modals>
-	<div
-	slot="backdrop"
-	role="none"
-	/>
+	<div slot="backdrop" role="none" />
 </Modals>
 
-<div class="text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl my-2">
+<div class="my-2 text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl">
 	KW {weekNumber} - {currentDate.format('DD.MM.YYYY HH:mm:ss')}
 </div>
 

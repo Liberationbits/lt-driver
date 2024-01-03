@@ -44,7 +44,10 @@
                                 h-8 w-8 rounded-full border-2 border-base-300
                             "
 					/>
-					<div class="text-base-100-content truncate text-center text-base font-medium" style="width: 70%">
+					<div
+						class="text-base-100-content truncate text-center text-base font-medium"
+						style="width: 70%"
+					>
 						<Name
 							ndk={$ndk}
 							user={$currentUser}
@@ -53,7 +56,14 @@
 						/>
 					</div>
 				</div>
-				<button on:click={() => openModal(UserProfileEditorModal, {userName: $profileData.name, imageURL: $profileData.imageUrl}, {replace: true})}>
+				<button
+					on:click={() =>
+						openModal(
+							UserProfileEditorModal,
+							{ userName: $profileData.name, imageURL: $profileData.imageUrl },
+							{ replace: true }
+						)}
+				>
 					<GearIcon />
 				</button>
 			</div>

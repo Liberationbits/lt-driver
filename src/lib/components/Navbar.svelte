@@ -17,7 +17,7 @@
 
 	<div class="navbar-center">
 		<h1 class="font-bol ml-1 mr-1 text-base normal-case md:text-xl">
-			{pageTitle}{$profileData.name}
+			{pageTitle}{$profileData.name ? ' - ' + $profileData.name : ''}
 		</h1>
 	</div>
 
