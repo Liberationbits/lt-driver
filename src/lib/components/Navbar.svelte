@@ -6,9 +6,9 @@
 
 	$: route = $page.url.pathname;
 	$: pageTitle = route == '/' ? 'Liefertour' : 'Liefertour Live';
-	$: profileName = $profileData?.name
+	$: profileName = $profileData?.name;
 	$: npub = $currentUser?.npub;
-	$: displayName = profileName ? ` - ${profileName}` : (npub ? ` - ${npub}` : '');
+	$: displayName = profileName ? ` - ${profileName}` : npub ? ` - ${npub}` : '';
 </script>
 
 <div class="navbar mb-2 bg-base-100">
@@ -18,8 +18,8 @@
 		</a>
 	</div>
 
-	<div class="navbar-center flex-auto w-[55%]">
-		<h1 class="font-bol ml-1 mr-1 text-base normal-case md:text-xl truncate">
+	<div class="navbar-center w-[55%] flex-auto">
+		<h1 class="font-bol ml-1 mr-1 truncate text-base normal-case md:text-xl">
 			{pageTitle}{displayName}
 		</h1>
 	</div>
