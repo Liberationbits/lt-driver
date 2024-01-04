@@ -19,7 +19,7 @@
 		localStorage.removeItem(LocalStorageKeys.CurrentUserNpub);
 		localStorage.removeItem(LocalStorageKeys.NostrTargetNpub);
 
-		// explicitly prevent auto-login with NIP-07
+		// explicitly prevent auto-login
 		localStorage.setItem(LocalStorageKeys.NostrKeyMethod, 'none');
 	}
 </script>

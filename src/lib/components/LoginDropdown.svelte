@@ -4,6 +4,7 @@
 	import LoginGuestButton from './LoginGuestButton.svelte';
 	// import LoginNip46Button from './LoginNip46Button.svelte';
 	import CollapsableDropdown from '$lib/components/CollapsableDropdown.svelte';
+	import LoginLocalButton from './LoginLocalButton.svelte';
 </script>
 
 {#if !$ndk.signer}
@@ -44,6 +45,7 @@
 				<div class="flex justify-center">
 					<div class="flex w-full flex-col gap-2">
 						<div class="text-center text-xs font-normal">Schon auf Nostr?</div>
+						<LoginLocalButton />
 						<LoginNip07Button />
 					</div>
 				</div>
