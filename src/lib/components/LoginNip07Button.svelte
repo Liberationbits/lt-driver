@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ndk from '$lib/stores/ndk';
-	import { login } from '$lib/utils/login';
+	import { LocalStorageKeys, login } from '$lib/utils/login';
 	import { currentUser } from '$stores/current-user';
 	import SubtleButton from '$lib/components/buttons/SubtleButton.svelte';
 	import { browser } from '$app/environment';
@@ -16,8 +16,8 @@
 			alert('Login failed');
 		} else {
 			$currentUser = user;
-			localStorage.setItem('nostr-key-method', 'nip07');
-			localStorage.setItem('nostr-target-npub', $currentUser.npub);
+			localStorage.setItem(LocalStorageKeys.NostrKeyMethod, 'nip07');
+			localStorage.setItem(LocalStorageKeys.NostrTargetNpub, $currentUser.npub);
 		}
 	}
 </script>

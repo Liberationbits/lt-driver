@@ -10,21 +10,17 @@
 	import { get as getStore } from 'svelte/store';
 	import { openModal } from 'svelte-modals';
 	import UserProfileEditorModal from './modals/UserProfileEditorModal.svelte';
+	import { LocalStorageKeys } from '$utils/login';
 
 	export function logout(): void {
 		const $ndk = getStore(ndk);
 		$ndk.signer = undefined;
 		currentUser.set(undefined);
-		localStorage.removeItem('currentUserFollowPubkeysStore');
-		localStorage.removeItem('currentUserStore');
-		localStorage.removeItem('user-follows');
-		localStorage.removeItem('network-follows');
-		localStorage.removeItem('network-follows-updated-t');
-		localStorage.removeItem('currentUserNpub');
-		localStorage.removeItem('nostr-target-npub');
+		localStorage.removeItem(LocalStorageKeys.CurrentUserNpub);
+		localStorage.removeItem(LocalStorageKeys.NostrTargetNpub);
 
 		// explicitly prevent auto-login with NIP-07
-		localStorage.setItem('nostr-key-method', 'none');
+		localStorage.setItem(LocalStorageKeys.NostrKeyMethod, 'none');
 	}
 </script>
 
@@ -76,6 +72,19 @@
 				<Notification title={'Likes'} />
 				<Notification title={'Comments'} />
 				<Notification title={'Unknown'} />
+			</div>
+		</div>
+		<div>
+			<span class="text-[10px] font-semibold tracking-widest">SCHÜSSELN</span>
+			<div class="m-2 flex flex-col text-[10px]">
+				<div>Öffentlich:</div>
+				<textarea readonly class="w-full text-[10px]">{$currentUser?.npub}</textarea>
+				{#if localStorage.getItem(LocalStorageKeys.NostrKeyMethod) === 'pk'}
+					<div>Privat:</div>
+					<textarea readonly class="w-full text-[10px]"
+						>{localStorage.getItem(LocalStorageKeys.NostrKey)}</textarea
+					>
+				{/if}
 			</div>
 		</div>
 		<div class="p-[22px]">
