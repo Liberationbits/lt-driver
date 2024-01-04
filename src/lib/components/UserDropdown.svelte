@@ -78,7 +78,7 @@
 			<span class="text-[10px] font-semibold tracking-widest">SCHÜSSELN</span>
 			<div class="m-2 flex flex-col text-[10px]">
 				<div>Öffentlich:</div>
-				<textarea readonly class="w-full text-[10px]">{$currentUser?.npub}</textarea>
+				<textarea readonly class="w-full text-[10px]">{$currentUser?.pubkey}</textarea>
 				{#if localStorage.getItem(LocalStorageKeys.NostrKeyMethod) === 'pk'}
 					<div>Privat:</div>
 					<textarea readonly class="w-full text-[10px]"
