@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { profileData } from '$stores/current-user';
+	import { profileData, currentUser } from '$stores/current-user';
 	import CurrentUser from './CurrentUser.svelte';
 	import { Truck } from 'phosphor-svelte';
 
 	$: route = $page.url.pathname;
 	$: pageTitle = route == '/' ? 'Liefertour' : 'Liefertour Live';
+	$: profileName = $profileData?.name
+	$: npub = $currentUser?.npub;
+	$: displayName = profileName ? ` - ${profileName}` : (npub ? ` - ${npub}` : '');
 </script>
 
 <div class="navbar mb-2 bg-base-100">
@@ -15,9 +18,9 @@
 		</a>
 	</div>
 
-	<div class="navbar-center">
-		<h1 class="font-bol ml-1 mr-1 text-base normal-case md:text-xl">
-			{pageTitle}{$profileData.name ? ' - ' + $profileData.name : ''}
+	<div class="navbar-center flex-auto w-[55%]">
+		<h1 class="font-bol ml-1 mr-1 text-base normal-case md:text-xl truncate">
+			{pageTitle}{displayName}
 		</h1>
 	</div>
 
