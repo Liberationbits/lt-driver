@@ -19,7 +19,7 @@ export const initialHubs: PickupHub[] = [
 	},
 	{
 		id: '3',
-		code: 'CBH',
+		code: 'CHB',
 		district: 'Charlottenburg',
 		membersCount: 3,
 		portions: 2.5

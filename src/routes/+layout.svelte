@@ -7,12 +7,14 @@
 	import Navbar from '$components/Navbar.svelte';
 	import dayjs from 'dayjs';
 	import weekOfYear from 'dayjs/plugin/weekOfYear';
+	import { Modals } from 'svelte-modals';
+	import { LocalStorageKeys } from '$utils/login';
 
 	onMount(async () => {
 		try {
 			$ndk.connect();
 
-			if (localStorage.getItem('nostr-login') === 'nip07') {
+			if (localStorage.getItem(LocalStorageKeys.NostrLogin) === 'nip07') {
 				await login();
 			}
 		} catch (e) {
@@ -35,7 +37,7 @@
 			$currentUser = await $ndk.signer?.blockUntilReady();
 			if ($currentUser) {
 				$currentUser.ndk = $ndk;
-				localStorage.setItem('nostr-login', 'nip07');
+				localStorage.setItem(LocalStorageKeys.NostrLogin, 'nip07');
 			}
 		} catch (error) {
 			console.log('Error during login: ' + error);
@@ -50,7 +52,11 @@
 
 <Navbar />
 
-<div class="text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl my-2">
+<Modals>
+	<div slot="backdrop" role="none" />
+</Modals>
+
+<div class="my-2 text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl">
 	KW {weekNumber} - {currentDate.format('DD.MM.YYYY HH:mm:ss')}
 </div>
 

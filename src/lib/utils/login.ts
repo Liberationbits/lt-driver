@@ -2,6 +2,14 @@ import type NDK from '@nostr-dev-kit/ndk';
 import { NDKNip07Signer, NDKNip46Signer, NDKPrivateKeySigner, NDKUser } from '@nostr-dev-kit/ndk';
 
 export type LoginMethod = 'none' | 'pk' | 'nip07' | 'nip46';
+export enum LocalStorageKeys {
+	NostrKey = 'nostr-key',
+	NostrKeyMethod = 'nostr-key-method',
+	NostrTargetNpub = 'nostr-target-npub',
+	NostrLogin = 'nostr-login',
+	NostrNsecbunkerKey = 'nostr-nsecbunker-key',
+	CurrentUserNpub = 'currentUserNpub'
+}
 
 /**
  * This function attempts to sign in using whatever method was previously
@@ -13,13 +21,13 @@ export async function login(
 	method?: LoginMethod
 ): Promise<NDKUser | null> {
 	// Check if there is a localStorage item with the key "nostr-key-method"
-	const nostrKeyMethod = method || localStorage.getItem('nostr-key-method');
+	const nostrKeyMethod = method || localStorage.getItem(LocalStorageKeys.NostrKeyMethod);
 
 	switch (nostrKeyMethod) {
 		case 'none':
 			return null;
 		case 'pk': {
-			const key = localStorage.getItem('nostr-key');
+			const key = localStorage.getItem(LocalStorageKeys.NostrKey);
 
 			if (!key) return null;
 
@@ -34,7 +42,7 @@ export async function login(
 		case 'nip46': {
 			const promise = new Promise<NDKUser | null>((resolve, reject) => {
 				try {
-					const existingPrivateKey = localStorage.getItem('nostr-nsecbunker-key');
+					const existingPrivateKey = localStorage.getItem(LocalStorageKeys.NostrNsecbunkerKey);
 
 					if (!bunkerNDK) bunkerNDK = ndk;
 
@@ -88,7 +96,7 @@ export async function login(
  * This function attempts to sign in using a NIP-07 extension.
  */
 async function nip07SignIn(ndk: NDK): Promise<NDKUser | null> {
-	const storedNpub = localStorage.getItem('currentUserNpub');
+	const storedNpub = localStorage.getItem(LocalStorageKeys.CurrentUserNpub);
 	let user: NDKUser | null = null;
 
 	if (storedNpub) {
@@ -101,7 +109,7 @@ async function nip07SignIn(ndk: NDK): Promise<NDKUser | null> {
 			ndk.signer = new NDKNip07Signer();
 			user = await ndk.signer.user();
 			user.ndk = ndk;
-			localStorage.setItem('currentUserNpub', user.npub);
+			localStorage.setItem(LocalStorageKeys.CurrentUserNpub, user.npub);
 		} catch (e) {
 			console.error('Error while doing NIP-07 login:' + e);
 		}
@@ -118,7 +126,7 @@ async function nip46SignIn(
 	bunkerNDK: NDK,
 	existingPrivateKey: string
 ): Promise<NDKUser | null> {
-	const npub = localStorage.getItem('nostr-target-npub')!;
+	const npub = localStorage.getItem(LocalStorageKeys.NostrTargetNpub)!;
 	const remoteUser = new NDKUser({ npub });
 	let user: NDKUser | null = null;
 	remoteUser.ndk = bunkerNDK;

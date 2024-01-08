@@ -19,7 +19,7 @@ if (browser) {
 }
 
 export const defaultRelays = dev
-	? ['ws://localhost:4736']
+	? ['ws://localhost:4736', 'ws://192.168.178.20:4736']
 	: [
 			'wss://nos.lol',
 			'wss://relay.damus.io',

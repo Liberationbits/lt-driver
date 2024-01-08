@@ -40,7 +40,7 @@
 </svelte:head>
 
 <div class="overflow-x-auto">
-	<table class="table-xs text-xs w-full">
+	<table class="table-xs w-full text-xs">
 		<!-- head -->
 		<thead>
 			<tr>
