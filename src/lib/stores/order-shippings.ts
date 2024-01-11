@@ -36,12 +36,8 @@ const shippingEventsStore = $ndk.storeSubscribe(
 type ShippingsESHandler = (es: NDKEvent[], oss: OrderShippingAndEvent[]) => OrderShippingAndEvent[];
 
 const shippingsESHandler: ShippingsESHandler = (es, oss) => {
-	function isValidShippingUpdate(e: NDKEvent, os: OrderShipping): boolean {
-		const eventShippingState =
-			e.kind == OrderShippingKind.Packed ? ShippingState.Liefern : ShippingState.Geliefert;
-		if (os.customerId != e.tagValue('p')!) return false;
-		else if (os.shippingState() >= eventShippingState) return false;
-		else return true;
+	function eventState(e: NDKEvent): ShippingState {
+		return e.kind == OrderShippingKind.Packed ? ShippingState.Liefern : ShippingState.Geliefert;
 	}
 	function deserialize(json: string): OrderShipping {
 		const jsonObj = JSON.parse(json);
@@ -55,17 +51,18 @@ const shippingsESHandler: ShippingsESHandler = (es, oss) => {
 	for (const e of es.filter((e) => e.tagValue('d') && e.tagValue('p'))) {
 		const existingOrderShipping = oss.find((os) => os.orderShipping.id == e.tagValue('d')!);
 		if (existingOrderShipping) {
-			if (isValidShippingUpdate(e, existingOrderShipping.orderShipping)) {
-				existingOrderShipping.orderShipping.update(deserialize(e.content));
-				existingOrderShipping.event = e;
-			} else {
+			const eos = existingOrderShipping.orderShipping;
+			if (e.tagValue('p')! != eos.customerId) {
 				const message =
 					'Error: got invalid event update,\n Event: ' +
-					e +
+					JSON.stringify(e) +
 					'\n For OrderShipping: ' +
-					existingOrderShipping;
+					JSON.stringify(existingOrderShipping);
 				console.error(message);
 				alert(message); // todo: use error component
+			} else if (eventState(e) > eos.shippingState()) {
+				eos.update(deserialize(e.content));
+				existingOrderShipping.event = e;
 			}
 		} else oss.unshift({ orderShipping: deserialize(e.content), event: e });
 	}
