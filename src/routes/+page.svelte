@@ -11,7 +11,7 @@
 	let currentHubIndx = 0;
 	let currentHub = $pickupHubs[currentHubIndx];
 	let currentShipping = findCurrentShipping(currentHub, $orderShippingsStore);
-	let shippingState = currentShipping.shippingState();
+	let shippingState = currentShipping.state;
 	let packingBoxes = currentShipping.packingBoxes;
 	let returnedBoxes = currentShipping.returnedBoxes;
 	let comment = currentShipping.comment;
@@ -21,7 +21,7 @@
 	function updateViewModel(hubIdx: number, oss: OrderShipping[]) {
 		currentHub = $pickupHubs[hubIdx];
 		currentShipping = findCurrentShipping(currentHub, oss);
-		shippingState = currentShipping.shippingState();
+		shippingState = currentShipping.state;
 		packingBoxes = currentShipping.packingBoxes;
 		returnedBoxes = currentShipping.returnedBoxes;
 		comment = currentShipping.comment;

@@ -39,14 +39,6 @@ const shippingsESHandler: ShippingsESHandler = (es, oss) => {
 	function eventState(e: NDKEvent): ShippingState {
 		return e.kind == OrderShippingKind.Packed ? ShippingState.Liefern : ShippingState.Geliefert;
 	}
-	function deserialize(json: string): OrderShipping {
-		const jsonObj = JSON.parse(json);
-		const nos = new OrderShipping(jsonObj.customerId, jsonObj.id);
-		nos.packingBoxes = jsonObj.packingBoxes;
-		nos.returnedBoxes = jsonObj.returnedBoxes;
-		nos.comment = jsonObj.comment;
-		return nos;
-	}
 
 	for (const e of es.filter((e) => e.tagValue('d') && e.tagValue('p'))) {
 		const existingOrderShipping = oss.find((os) => os.orderShipping.id == e.tagValue('d')!);
@@ -60,11 +52,11 @@ const shippingsESHandler: ShippingsESHandler = (es, oss) => {
 					JSON.stringify(existingOrderShipping);
 				console.error(message);
 				alert(message); // todo: use error component
-			} else if (eventState(e) > eos.shippingState()) {
-				eos.update(deserialize(e.content));
+			} else if (eventState(e) > eos.state) {
+				eos.update(OrderShipping.fromEvent(e));
 				existingOrderShipping.event = e;
 			}
-		} else oss.unshift({ orderShipping: deserialize(e.content), event: e });
+		} else oss.unshift({ orderShipping: OrderShipping.fromEvent(e), event: e });
 	}
 	return oss;
 };

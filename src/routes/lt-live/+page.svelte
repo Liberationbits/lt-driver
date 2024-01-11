@@ -20,7 +20,7 @@
 
 	$: hubShippings = knownOrderShippingAndEvents.map<HubShipping>((ose) => {
 		const hub = $pickupHubs.find((h) => h.id == ose.orderShipping.customerId);
-		const state = ose.orderShipping.shippingState();
+		const state = ose.orderShipping.state;
 		return {
 			hubCode: hub?.code!,
 			members: hub?.membersCount!,
