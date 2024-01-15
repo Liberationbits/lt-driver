@@ -8,7 +8,7 @@ import { get as getStore } from 'svelte/store';
 
 export async function storeOrderShipping(os: OrderShipping, currentState: ShippingState) {
 	const kind =
-		currentState == ShippingState.Packen ? OrderShippingKind.Packed : OrderShippingKind.Delivered;
+		currentState == ShippingState.Laden ? OrderShippingKind.Packed : OrderShippingKind.Delivered;
 	const ndkEvent = new NDKEvent(getStore(ndk));
 	ndkEvent.kind = kind;
 	ndkEvent.pubkey = getStore(currentUser)!.pubkey;

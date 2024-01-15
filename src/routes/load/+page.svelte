@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>Liefertour Live - App für die Liefertour Verfolgung</title>
+	<title>LT Fahrer - App für den Liefertour-Fahrer</title>
 </svelte:head>
 
 {#if $currentUser}
