@@ -8,11 +8,10 @@
 </svelte:head>
 
 {#if $currentUser}
-	<div class="mt-10 grid grid-cols-6 gap-4 px-2">
+	<div class="grid grid-cols-6 gap-4 mt-10 px-2">
 		{#each $pickupHubs as hub}
-			<div class="">{hub.code}</div>
+			<button class="btn btn-primary">{hub.code}</button>
 		{/each}
-		<table class="table-xs w-full text-xs"></table>
 	</div>
 {:else}
 	<p class="text-center tracking-wider text-orange-500 sm:text-2xl md:text-3xl lg:text-4xl">
