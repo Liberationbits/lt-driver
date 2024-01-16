@@ -3,10 +3,11 @@
 	import PickupHubInputModal from '$components/modals/PickupHubInputModal.svelte';
 	import { currentUser } from '$stores/current-user';
 	import { openModal } from 'svelte-modals';
+	import type PickupHub from '$lib/model/pickup-hub';
 
-	function pickupHubInput(hubId: string): () => void {
+	function pickupHubInput(hub: PickupHub): () => void {
 		return () => {
-			openModal(PickupHubInputModal, { currentHubId: hubId });
+			openModal(PickupHubInputModal, { currentHub: hub });
 		};
 	}
 </script>
@@ -18,7 +19,7 @@
 {#if $currentUser}
 	<div class="mt-10 grid grid-cols-6 gap-4 px-2">
 		{#each $pickupHubs as hub}
-			<button class="btn btn-primary" on:click={pickupHubInput(hub.id)}>{hub.code}</button>
+			<button class="btn btn-primary" on:click={pickupHubInput(hub)}>{hub.code}</button>
 		{/each}
 	</div>
 {:else}
