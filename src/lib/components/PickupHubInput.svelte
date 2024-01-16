@@ -46,6 +46,10 @@
 	}
 </script>
 
+<div class="text-center tracking-wider text-orange-500 sm:text-2xl md:text-3xl lg:text-4xl">
+    {ShippingState[shippingState]}
+</div>
+
 <div class="mx-2 flex gap-2">
     <label for="boxes" class="text-accent-content">Kisten:</label>
     {#if shippingState == ShippingState.Laden}

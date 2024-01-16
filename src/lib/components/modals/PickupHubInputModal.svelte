@@ -9,7 +9,7 @@
 </script>
 
 {#if isOpen}
-	<ModalWrapper title="Station-Eingaben" subtitle="Den Stand der Abholstation ändern">
+	<ModalWrapper title="Station-Eingaben" subtitle="Stand der Abholstation ändern">
 		<PickupHubInput currentHubIndx={currentHubIndx} postHook={closeModal}/>
 	</ModalWrapper>
 {/if}
