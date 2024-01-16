@@ -5,7 +5,7 @@
 	import dayjs from 'dayjs';
 
 	type HubShipping = {
-		hubCode: string;
+		hubCode: string | undefined;
 		members: number;
 		portions: number;
 		state: ShippingState;
@@ -22,9 +22,9 @@
 		const hub = $pickupHubs.find((h) => h.id == ose.orderShipping.customerId);
 		const state = ose.orderShipping.state;
 		return {
-			hubCode: hub?.code!,
-			members: hub?.membersCount!,
-			portions: hub?.portions!,
+			hubCode: hub?.code,
+			members: hub ? hub.membersCount : 0,
+			portions: hub ? hub.portions : 0,
 			state: state,
 			stateColorClass: state == ShippingState.Liefern ? 'text-yellow-500' : 'text-green-500',
 			time: ose.event.created_at
