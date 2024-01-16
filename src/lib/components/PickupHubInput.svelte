@@ -7,6 +7,7 @@
 	import { storeOrderShipping } from '$utils/order-shipping';
 
 	export let currentHubIndx: number;
+    export let postHook: () => void;
 	// view model
 	let currentHub = $pickupHubs[currentHubIndx];
 	let currentShipping = findCurrentShipping(currentHub, $orderShippingsStore);
@@ -41,6 +42,7 @@
 		newShipping.returnedBoxes = returnedBoxes;
 		newShipping.comment = comment;
 		await storeOrderShipping(newShipping, shippingState);
+        postHook();
 	}
 </script>
 
