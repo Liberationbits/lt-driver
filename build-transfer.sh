@@ -2,7 +2,8 @@
 
 # precondition: an ssh setup for uberspace must be in place
 
-npm run build \
+npm install \
+&& npm run build \
 && npm ci --omit dev \
 rm build.tarx
 rm node_modules.tarx
