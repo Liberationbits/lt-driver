@@ -3,7 +3,7 @@ import type { NDKEvent } from '@nostr-dev-kit/ndk';
 import { v4 as uuidv4 } from 'uuid';
 
 export enum ShippingState {
-	Packen, // packing
+	Laden, // loading
 	Liefern, // delivering
 	Geliefert // delivered
 }
@@ -14,7 +14,7 @@ export class OrderShipping {
 	packingBoxes: number = 0;
 	returnedBoxes: number = 0;
 	comment: string = '';
-	state: ShippingState = ShippingState.Packen;
+	state: ShippingState = ShippingState.Laden;
 
 	constructor(customerId: string, id: string = uuidv4()) {
 		this.id = id;
