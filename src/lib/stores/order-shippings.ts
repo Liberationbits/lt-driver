@@ -27,7 +27,7 @@ const shippingEventsStore = $ndk.storeSubscribe(
 	{
 		kinds: [OrderShippingKind.Packed, OrderShippingKind.Delivered],
 		authors: drivers,
-		since: Math.floor(Date.now() / 1000) - 60 * 60 * 24 * 7,
+		since: Math.floor(Date.now() / 1000) - 60 * 60 * 24 * 3,
 		limit: 100
 	} as NDKFilter<number>,
 	{ closeOnEose: false, subId: 'order-shipping-events' }
