@@ -4,6 +4,21 @@
 	import { currentUser } from '$stores/current-user';
 	import { openModal } from 'svelte-modals';
 	import type PickupHub from '$lib/model/pickup-hub';
+	import { colorFor } from '$utils/ui-helpers';
+	import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
+	import { orderShippingsStore } from '$stores/order-shippings';
+
+	type PickupHubAndState = [PickupHub, ShippingState];
+
+	$: hubAndStates = $pickupHubs.map<PickupHubAndState>((h) => [
+		h,
+		stateOf(h, $orderShippingsStore)
+	]);
+
+	function stateOf(hub: PickupHub, oss: OrderShipping[]): ShippingState {
+		const orderShipping = oss.find((os) => os.customerId == hub.id);
+		return orderShipping ? orderShipping.state : ShippingState.Laden;
+	}
 
 	function pickupHubInput(hub: PickupHub): () => void {
 		return () => {
@@ -18,8 +33,10 @@
 
 {#if $currentUser}
 	<div class="mt-10 grid grid-cols-6 gap-4 px-2">
-		{#each $pickupHubs as hub}
-			<button class="btn btn-primary" on:click={pickupHubInput(hub)}>{hub.code}</button>
+		{#each hubAndStates as hs}
+			<button class="btn btn-{colorFor(hs[1])}" on:click={pickupHubInput(hs[0])}
+				>{hs[0].code}</button
+			>
 		{/each}
 	</div>
 {:else}

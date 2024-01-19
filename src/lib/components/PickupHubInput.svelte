@@ -3,6 +3,7 @@
 	import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
 	import { orderShippingsStore } from '$stores/order-shippings';
 	import { storeOrderShipping } from '$utils/order-shipping';
+	import { colorFor } from '$utils/ui-helpers';
 
 	export let currentHubId: string;
 	export let postHook: () => void = () => {};
@@ -42,7 +43,11 @@
 	}
 </script>
 
-<div class="text-center tracking-wider text-orange-500 sm:text-2xl md:text-3xl lg:text-4xl">
+<div
+	class="text-center tracking-wider sm:text-2xl md:text-3xl lg:text-4xl text-{colorFor(
+		shippingState
+	)}"
+>
 	{ShippingState[shippingState]}
 </div>
 
