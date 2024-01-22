@@ -23,3 +23,11 @@ Initial release.
 ## Features
 
 - New view for loading (formerly packing)
+
+# Release 0.2.1
+
+(22-01-2024)
+
+## Features
+
+- Introduced a color scheme for the order shipping state, red, yellow for packed and green for delivered.
