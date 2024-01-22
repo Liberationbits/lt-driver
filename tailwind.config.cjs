@@ -4,12 +4,6 @@ module.exports = {
 		'./src/**/*.{html,js,svelte,ts}',
 		'./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}'
 	],
-	purge: {
-		content: ['./src/**/*.svelte'],
-		options: {
-		  safelist: ['text-error', 'text-warning', 'text-success', 'btn-error', 'btn-warning', 'btn-success']
-		}
-	},
 	// darkMode: 'class',
 	theme: {
 		extend: {

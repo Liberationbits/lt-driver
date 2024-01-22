@@ -4,7 +4,7 @@
 	import { currentUser } from '$stores/current-user';
 	import { openModal } from 'svelte-modals';
 	import type PickupHub from '$lib/model/pickup-hub';
-	import { colorFor } from '$utils/ui-helpers';
+	import { btnColorFor } from '$utils/ui-helpers';
 	import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
 	import { orderShippingsStore } from '$stores/order-shippings';
 
@@ -34,7 +34,7 @@
 {#if $currentUser}
 	<div class="mt-10 grid grid-cols-6 gap-4 px-2">
 		{#each hubAndStates as hs}
-			<button class="btn btn-{colorFor(hs[1])}" on:click={pickupHubInput(hs[0])}
+			<button class="btn {btnColorFor(hs[1])}" on:click={pickupHubInput(hs[0])}
 				>{hs[0].code}</button
 			>
 		{/each}

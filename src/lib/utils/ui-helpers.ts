@@ -1,12 +1,23 @@
 import { ShippingState } from '$lib/model/order-shipping';
 
-export function colorFor(state: ShippingState): string {
+export function textColorFor(state: ShippingState): string {
 	switch (state) {
 		case ShippingState.Laden:
-			return 'error';
+			return 'text-error';
 		case ShippingState.Liefern:
-			return 'warning';
+			return 'text-warning';
 		default:
-			return 'success';
+			return 'text-success';
+	}
+}
+
+export function btnColorFor(state: ShippingState): string {
+	switch (state) {
+		case ShippingState.Laden:
+			return 'btn-error';
+		case ShippingState.Liefern:
+			return 'btn-warning';
+		default:
+			return 'btn-success';
 	}
 }
