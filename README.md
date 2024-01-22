@@ -29,10 +29,11 @@ To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/
 
 We've configured the project for the nodejs adapter. We deploy currently to the hosting provider [uberspace](https://uberspace.de). The build and deployment process is partially automated through the scripts:
 
-* `build-transfer.sh`, build, package and transfer the app to server,
-* `deploy-restart.sh`, on server terminal unpack app and restart the node server.
+- `build-transfer.sh`, build, package and transfer the app to server,
+- `deploy-restart.sh`, on server terminal unpack app and restart the node server.
 
 ### Steps
+
 Assuming the `ssh` access to the hosting server is set up and configured in the ssh config under the name _uberspace_,
 
 1. execute `build-transfer.sh`

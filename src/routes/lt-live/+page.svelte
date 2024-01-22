@@ -2,6 +2,7 @@
 	import { ShippingState } from '$lib/model/order-shipping';
 	import { orderShippingAndEventsStore } from '$stores/order-shippings';
 	import { pickupHubs } from '$stores/pickup-hubs';
+	import { colorFor } from '$utils/ui-helpers';
 	import dayjs from 'dayjs';
 
 	type HubShipping = {
@@ -26,7 +27,7 @@
 			members: hub ? hub.membersCount : 0,
 			portions: hub ? hub.portions : 0,
 			state: state,
-			stateColorClass: state == ShippingState.Liefern ? 'text-yellow-500' : 'text-green-500',
+			stateColorClass: 'text-' + colorFor(state),
 			time: ose.event.created_at
 				? dayjs(ose.event.created_at * 1000).format('DD.MM.YY HH:mm:ss')
 				: '---',
