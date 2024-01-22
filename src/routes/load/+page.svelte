@@ -34,8 +34,7 @@
 {#if $currentUser}
 	<div class="mt-10 grid grid-cols-6 gap-4 px-2">
 		{#each hubAndStates as hs}
-			<button class="btn {btnColorFor(hs[1])}" on:click={pickupHubInput(hs[0])}
-				>{hs[0].code}</button
+			<button class="btn {btnColorFor(hs[1])}" on:click={pickupHubInput(hs[0])}>{hs[0].code}</button
 			>
 		{/each}
 	</div>

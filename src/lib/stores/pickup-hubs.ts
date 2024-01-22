@@ -26,157 +26,178 @@ export const initialHubs: PickupHub[] = [
 	},
 	{
 		id: '4',
+		code: 'TE',
+		district: 'Tegel',
+		membersCount: 2,
+		portions: 1
+	},
+	{
+		id: '5',
 		code: 'PD',
 		district: 'Potsdam',
 		membersCount: 15,
 		portions: 13
 	},
 	{
-		id: '5',
+		id: '6',
 		code: 'DL',
 		district: 'Dahlem',
 		membersCount: 17,
 		portions: 14.5
 	},
 	{
-		id: '6',
+		id: '7',
+		code: 'FN',
+		district: 'Friedenau',
+		membersCount: 1,
+		portions: 1
+	},
+	{
+		id: '8',
 		code: 'TH',
 		district: 'Tempelhof',
 		membersCount: 1,
 		portions: 1
 	},
 	{
-		id: '7',
+		id: '9',
 		code: 'NK',
 		district: 'Neukölln',
 		membersCount: 9,
 		portions: 5
 	},
 	{
-		id: '8',
+		id: '10',
 		code: 'NK2',
 		district: 'Neukölln',
 		membersCount: 3,
 		portions: 3
 	},
 	{
-		id: '9',
+		id: '11',
 		code: 'NK3',
 		district: 'Neukölln',
 		membersCount: 2,
 		portions: 1.5
 	},
 	{
-		id: '10',
+		id: '12',
 		code: 'PL',
 		district: 'Pänterwald',
 		membersCount: 5,
 		portions: 4.5
 	},
 	{
-		id: '11',
+		id: '13',
 		code: 'OSW2',
 		district: 'Oberschöneweide',
 		membersCount: 1,
 		portions: 1
 	},
 	{
-		id: '12',
+		id: '14',
 		code: 'OSW',
 		district: 'Oberschöneweide',
 		membersCount: 1,
 		portions: 0.5
 	},
 	{
-		id: '13',
+		id: '15',
 		code: 'KÖ',
 		district: 'Köpernick',
 		membersCount: 2,
 		portions: 1
 	},
 	{
-		id: '14',
+		id: '16',
 		code: 'FG',
 		district: 'Friedrichshagen',
 		membersCount: 6,
 		portions: 6
 	},
 	{
-		id: '15',
+		id: '17',
 		code: 'KH',
 		district: 'Karlshost',
 		membersCount: 2,
 		portions: 1.5
 	},
 	{
-		id: '16',
+		id: '18',
 		code: 'RU2',
 		district: 'Rummelsburg',
 		membersCount: 2,
 		portions: 1.5
 	},
 	{
-		id: '17',
+		id: '19',
 		code: 'FH2',
 		district: 'Friedrichshain',
 		membersCount: 5,
 		portions: 3
 	},
 	{
-		id: '18',
+		id: '20',
 		code: 'FH',
 		district: 'Friedrichshain',
 		membersCount: 4,
 		portions: 2
 	},
 	{
-		id: '19',
+		id: '21',
 		code: 'KB',
 		district: 'Kreuzberg',
 		membersCount: 7,
 		portions: 6
 	},
 	{
-		id: '20',
+		id: '22',
 		code: 'MI',
 		district: 'Mitte',
 		membersCount: 1,
 		portions: 1
 	},
 	{
-		id: '21',
+		id: '23',
 		code: 'WS',
 		district: 'Weißensee',
 		membersCount: 2,
 		portions: 2
 	},
 	{
-		id: '22',
+		id: '24',
 		code: 'WE',
 		district: 'Wedding',
 		membersCount: 16,
 		portions: 10
 	},
 	{
-		id: '23',
+		id: '25',
 		code: 'WE2',
 		district: 'Wedding',
 		membersCount: 6,
 		portions: 4.5
 	},
 	{
-		id: '24',
+		id: '26',
 		code: 'MO',
 		district: 'Moabit',
 		membersCount: 8,
 		portions: 4
 	},
 	{
-		id: '25',
+		id: '27',
 		code: 'HE',
 		district: 'Hermsdorf',
 		membersCount: 7,
 		portions: 7
+	},
+	{
+		id: '28',
+		code: 'RO',
+		district: 'Rosenthal',
+		membersCount: 2,
+		portions: 2
 	}
 ];
 

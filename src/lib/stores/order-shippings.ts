@@ -21,7 +21,10 @@ export const orderShippingsStore: Readable<OrderShipping[]> = derived(
 );
 
 const $ndk = getStore(ndk);
-const drivers = ['71df211931d26ee41121d295bd43cbc7e382505e333b5c13d4016ced9542d9d7']; // todo: include other drivers
+const drivers = [
+	'4cca069f12b2405c758c9382c41c2d08d8e3add2085c5f90f86e16cd74b9b358', // Simon
+	'71df211931d26ee41121d295bd43cbc7e382505e333b5c13d4016ced9542d9d7' // Antonio
+];
 
 const shippingEventsStore = $ndk.storeSubscribe(
 	{
