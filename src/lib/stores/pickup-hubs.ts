@@ -7,8 +7,8 @@ export const initialHubs: PickupHub[] = [
 		id: '1',
 		code: 'GS',
 		district: 'Gransee',
-		membersCount: 8,
-		portions: 6
+		membersCount: 7,
+		portions: 5
 	},
 	{
 		id: '2',
@@ -21,15 +21,15 @@ export const initialHubs: PickupHub[] = [
 		id: '3',
 		code: 'CHB',
 		district: 'Charlottenburg',
-		membersCount: 3,
-		portions: 2.5
+		membersCount: 4,
+		portions: 3.5
 	},
 	{
 		id: '4',
 		code: 'TE',
 		district: 'Tegel',
-		membersCount: 2,
-		portions: 1
+		membersCount: 3,
+		portions: 1.5
 	},
 	{
 		id: '5',
@@ -49,8 +49,8 @@ export const initialHubs: PickupHub[] = [
 		id: '7',
 		code: 'FN',
 		district: 'Friedenau',
-		membersCount: 1,
-		portions: 1
+		membersCount: 4,
+		portions: 2.5
 	},
 	{
 		id: '8',
@@ -63,14 +63,14 @@ export const initialHubs: PickupHub[] = [
 		id: '9',
 		code: 'NK',
 		district: 'Neukölln',
-		membersCount: 9,
-		portions: 5
+		membersCount: 10,
+		portions: 5.5
 	},
 	{
 		id: '10',
 		code: 'NK2',
 		district: 'Neukölln',
-		membersCount: 3,
+		membersCount: 4,
 		portions: 3
 	},
 	{
@@ -98,8 +98,8 @@ export const initialHubs: PickupHub[] = [
 		id: '14',
 		code: 'OSW',
 		district: 'Oberschöneweide',
-		membersCount: 1,
-		portions: 0.5
+		membersCount: 2,
+		portions: 1
 	},
 	{
 		id: '15',
@@ -161,22 +161,22 @@ export const initialHubs: PickupHub[] = [
 		id: '23',
 		code: 'WS',
 		district: 'Weißensee',
-		membersCount: 2,
-		portions: 2
+		membersCount: 3,
+		portions: 3
 	},
 	{
 		id: '24',
 		code: 'WE',
 		district: 'Wedding',
-		membersCount: 16,
-		portions: 10
+		membersCount: 15,
+		portions: 9.5
 	},
 	{
 		id: '25',
 		code: 'WE2',
 		district: 'Wedding',
-		membersCount: 6,
-		portions: 4.5
+		membersCount: 7,
+		portions: 5
 	},
 	{
 		id: '26',
