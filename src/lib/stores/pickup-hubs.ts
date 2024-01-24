@@ -112,8 +112,8 @@ export const initialHubs: PickupHub[] = [
 		id: '16',
 		code: 'FG',
 		district: 'Friedrichshagen',
-		membersCount: 6,
-		portions: 6
+		membersCount: 7,
+		portions: 5.5
 	},
 	{
 		id: '17',
@@ -189,8 +189,8 @@ export const initialHubs: PickupHub[] = [
 		id: '27',
 		code: 'HE',
 		district: 'Hermsdorf',
-		membersCount: 7,
-		portions: 7
+		membersCount: 4,
+		portions: 5
 	},
 	{
 		id: '28',
