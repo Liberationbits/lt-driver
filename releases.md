@@ -1,20 +1,22 @@
-# Release 0.1.0
+# Release 0.3.0
 
-(09-01-2024)
-Initial release.
+(05-02-2024)
 
 ## Features
 
-- Sequential driver view to pack and deliver to the pickup hubs.
-- View for consumers to see the state of the delivery.
+- Added the current version to the app menu,
+- Added a link to the app's code in the app menu,
+- Added Terms and Conditions to the app menu,  
+- Added a Copyright and License note in the app's footer,
+- Added an author's handle in the app's footer. 
 
-# Release 0.1.1
+# Release 0.2.1
 
-(12-01-2024)
+(22-01-2024)
 
-## Bug fixes
+## Features
 
-- Fix invalid event message pupup.
+- Introduced a color scheme for the order shipping state, red, yellow for packed and green for delivered.
 
 # Release 0.2.0
 
@@ -24,10 +26,20 @@ Initial release.
 
 - New view for loading (formerly packing)
 
-# Release 0.2.1
+# Release 0.1.1
 
-(22-01-2024)
+(12-01-2024)
+
+## Bug fixes
+
+- Fix invalid event message pupup.
+
+# Release 0.1.0
+
+(09-01-2024)
+Initial release.
 
 ## Features
 
-- Introduced a color scheme for the order shipping state, red, yellow for packed and green for delivered.
+- Sequential driver view to pack and deliver to the pickup hubs.
+- View for consumers to see the state of the delivery.
