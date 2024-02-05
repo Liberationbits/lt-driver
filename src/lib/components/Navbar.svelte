@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { profileData, currentUser } from '$stores/current-user';
+	import AppMenu from './AppMenu.svelte';
 	import CurrentUser from './CurrentUser.svelte';
-	import { Truck, SquaresFour, Target } from 'phosphor-svelte';
+	import { SquaresFour, Target } from 'phosphor-svelte';
 
 	$: route = $page.url.pathname;
 	$: pageTitle = route != '/lt-live' ? 'Liefertour' : 'Liefertour Live';
@@ -13,9 +14,7 @@
 
 <div class="navbar mb-2 bg-base-100">
 	<div class="navbar-start mr-1">
-		<a href="/" class="btn btn-ghost px-0 hover:bg-transparent">
-			<Truck class="h-8 w-8" />
-		</a>
+		<AppMenu />
 	</div>
 
 	<div class="navbar-center flex-auto">

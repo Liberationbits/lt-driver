@@ -71,3 +71,24 @@
 		</section>
 	</div>
 </div>
+
+<footer class="footer footer-center my-20 bg-base-100 p-4 text-base-content">
+	<aside>
+		<p>
+			<a
+				target="_blank"
+				href="https://njump.me/nprofile1qy88wumn8ghj7mn0wvhxcmmv9uq3uamnwvaz7tmwdaehgu3dwp6kytnhv4kxcmmjv3jhytnwv46z7qghwaehxw309a3xjarrda5kuetj9eek7cmfv9kz7qpqw80jzxf36fhwgyfp622m6s7tcl3cy5z7xva4cy75q9kwm92zm8tst5kv8k"
+			>
+				Mit 💜 gemacht von <span class="link">@rodant </span></a
+			>
+		</p>
+		<p>
+			&copy; 2024 - <a
+				class="link"
+				target="_blank"
+				href="https://github.com/Liberationbits/lt-driver?tab=AGPL-3.0-1-ov-file#readme"
+				>Open Source AGPL 3.0 Linzenz</a
+			>
+		</p>
+	</aside>
+</footer>
