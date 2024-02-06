@@ -1,3 +1,12 @@
+# Release 0.3.1
+
+(06-02-2024)
+
+## Bug fixes
+
+- Don't wait for a successful publish(event) and go to the next pickup hub. We'll see whether the drier
+  can work better under unreliable network connections.
+
 # Release 0.3.0
 
 (05-02-2024)
