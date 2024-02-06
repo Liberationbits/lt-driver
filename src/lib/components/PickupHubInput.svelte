@@ -33,12 +33,12 @@
 		}
 	}
 
-	async function storeState() {
+	function storeState() {
 		const newShipping = new OrderShipping(currentShipping.customerId, currentShipping.id);
 		newShipping.packingBoxes = packingBoxes;
 		newShipping.returnedBoxes = returnedBoxes;
 		newShipping.comment = comment;
-		await storeOrderShipping(newShipping, shippingState);
+		storeOrderShipping(newShipping, shippingState);
 		postHook();
 	}
 </script>
