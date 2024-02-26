@@ -7,8 +7,13 @@ import { NDKEvent } from '@nostr-dev-kit/ndk';
 import { get as getStore } from 'svelte/store';
 
 export async function storeOrderShipping(os: OrderShipping, currentState: ShippingState) {
+	if (os.state == ShippingState.Laden || currentState > os.state || os.packingBoxes <= 0) {
+		const msg = `Attempt to perform invalid state change! ${currentState} => ${os.state}, packed boxes = ${os.packingBoxes}`;
+		console.log(msg);
+		throw new Error(msg);
+	}
 	const kind =
-		currentState == ShippingState.Laden ? OrderShippingKind.Packed : OrderShippingKind.Delivered;
+		os.state == ShippingState.Liefern ? OrderShippingKind.Packed : OrderShippingKind.Delivered;
 	const ndkEvent = new NDKEvent(getStore(ndk));
 	ndkEvent.kind = kind;
 	ndkEvent.pubkey = getStore(currentUser)!.pubkey;
