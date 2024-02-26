@@ -15,9 +15,9 @@
 
 - Added the current version to the app menu,
 - Added a link to the app's code in the app menu,
-- Added Terms and Conditions to the app menu,  
+- Added Terms and Conditions to the app menu,
 - Added a Copyright and License note in the app's footer,
-- Added an author's handle in the app's footer. 
+- Added an author's handle in the app's footer.
 
 # Release 0.2.1
 
