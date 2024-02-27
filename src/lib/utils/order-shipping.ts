@@ -7,9 +7,16 @@ import { NDKEvent } from '@nostr-dev-kit/ndk';
 import { get as getStore } from 'svelte/store';
 
 export async function storeOrderShipping(os: OrderShipping, currentState: ShippingState) {
-	if (os.state == ShippingState.Laden || currentState > os.state || os.packingBoxes <= 0) {
-		const msg = `Attempt to perform invalid state change! ${currentState} => ${os.state}, packed boxes = ${os.packingBoxes}`;
+	if (
+		os.state == ShippingState.Laden ||
+		currentState > os.state ||
+		os.packingBoxes <= 0 ||
+		(os.state == ShippingState.Liefern && os.returnedBoxes) ||
+		(os.state == ShippingState.Geliefert && (!os.returnedBoxes || os.returnedBoxes < 0))
+	) {
+		const msg = `Attempt to perform invalid state change! ${currentState} => ${os.state}, packed-boxes = ${os.packingBoxes}, returned-boxes = ${os.returnedBoxes}`;
 		console.log(msg);
+		window.alert(msg);
 		throw new Error(msg);
 	}
 	const kind =

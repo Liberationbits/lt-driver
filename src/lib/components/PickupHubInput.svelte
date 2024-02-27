@@ -59,7 +59,7 @@
 		<input
 			id="boxes"
 			type="number"
-			min="0"
+			min="1"
 			max="99"
 			bind:value={packingBoxes}
 			class="xs:w-3 input-xs rounded"
@@ -96,14 +96,14 @@
 			<button
 				class="btn btn-warning btn-xs m-2"
 				on:click={storeState(ShippingState.Liefern)}
-				disabled={packingBoxes <= 0 || returnedBoxes > 0}>Packen</button
+				disabled={packingBoxes <= 0 || (!!returnedBoxes && returnedBoxes > 0)}>Packen</button
 			>
 		{/if}
 		{#if shippingState > ShippingState.Laden}
 			<button
 				class="btn btn-success btn-xs m-2"
 				on:click={storeState(ShippingState.Geliefert)}
-				disabled={packingBoxes <= 0 || returnedBoxes <= 0}>Liefern</button
+				disabled={packingBoxes <= 0 || !returnedBoxes || returnedBoxes < 0}>Liefern</button
 			>
 		{/if}
 	</div>
