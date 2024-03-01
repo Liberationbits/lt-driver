@@ -12,7 +12,7 @@ export class OrderShipping {
 	id: string;
 	customerId: string;
 	packingBoxes: number = 0;
-	returnedBoxes: number = 0;
+	returnedBoxes: number | undefined = undefined;
 	comment: string = '';
 	state: ShippingState = ShippingState.Laden;
 

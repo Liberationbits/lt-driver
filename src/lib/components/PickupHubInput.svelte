@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { CheckCircle } from 'phosphor-svelte';
 	import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
 	import { orderShippingsStore } from '$stores/order-shippings';
 	import { storeOrderShipping } from '$utils/order-shipping';
@@ -33,13 +32,16 @@
 		}
 	}
 
-	function storeState() {
-		const newShipping = new OrderShipping(currentShipping.customerId, currentShipping.id);
-		newShipping.packingBoxes = packingBoxes;
-		newShipping.returnedBoxes = returnedBoxes;
-		newShipping.comment = comment;
-		storeOrderShipping(newShipping, shippingState);
-		postHook();
+	function storeState(newState: ShippingState): () => void {
+		return () => {
+			const newShipping = new OrderShipping(currentShipping.customerId, currentShipping.id);
+			newShipping.packingBoxes = packingBoxes;
+			newShipping.returnedBoxes = returnedBoxes;
+			newShipping.comment = comment;
+			newShipping.state = newState;
+			storeOrderShipping(newShipping, shippingState);
+			postHook();
+		};
 	}
 </script>
 
@@ -53,17 +55,17 @@
 
 <div class="mx-2 flex gap-2">
 	<label for="boxes" class="text-accent-content">Kisten:</label>
-	{#if shippingState == ShippingState.Laden}
+	{#if shippingState <= ShippingState.Liefern}
 		<input
 			id="boxes"
 			type="number"
-			min="0"
+			min="1"
 			max="99"
 			bind:value={packingBoxes}
-			class="xs:w-3 input-xs"
+			class="xs:w-3 input-xs rounded"
 		/>
 	{:else}
-		<div>{packingBoxes}</div>
+		<div class="xs:w-3 w-16">{packingBoxes}</div>
 	{/if}
 
 	<label
@@ -71,29 +73,38 @@
 		class="text-accent-content"
 		hidden={shippingState < ShippingState.Liefern}>Kisten zurück:</label
 	>
-	{#if shippingState == ShippingState.Liefern}
+	{#if shippingState > ShippingState.Laden}
 		<input
 			id="returned-boxes"
 			type="number"
 			min="0"
 			max="99"
 			bind:value={returnedBoxes}
-			class="xs:w-3 input-xs"
+			class="xs:w-3 input-xs rounded"
 		/>
-	{:else if shippingState > ShippingState.Liefern}
-		<div>{returnedBoxes}</div>
 	{/if}
 </div>
-<div class="m-2 flex items-center gap-3">
-	{#if shippingState != ShippingState.Geliefert}
-		<textarea
-			rows="3"
-			placeholder="Kommentar..."
-			bind:value={comment}
-			class="textarea-bordered textarea-xs w-full"
-		/>
-		<button on:click={storeState}><CheckCircle size={32} color="#18cda9" /></button>
-	{:else}
-		<pre class="min-h-16 w-full text-sm text-accent-content">{comment}</pre>
-	{/if}
+<div class="m-2 flex items-center">
+	<textarea
+		rows="3"
+		placeholder="Kommentar..."
+		bind:value={comment}
+		class="textarea-bordered textarea-xs w-full rounded"
+	/>
+	<div>
+		{#if shippingState <= ShippingState.Liefern}
+			<button
+				class="btn btn-warning btn-xs m-2"
+				on:click={storeState(ShippingState.Liefern)}
+				disabled={packingBoxes <= 0 || (!!returnedBoxes && returnedBoxes > 0)}>Packen</button
+			>
+		{/if}
+		{#if shippingState > ShippingState.Laden}
+			<button
+				class="btn btn-success btn-xs m-2"
+				on:click={storeState(ShippingState.Geliefert)}
+				disabled={packingBoxes <= 0 || !returnedBoxes || returnedBoxes < 0}>Liefern</button
+			>
+		{/if}
+	</div>
 </div>

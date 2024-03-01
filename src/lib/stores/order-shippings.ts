@@ -38,13 +38,16 @@ const shippingEventsStore = $ndk.storeSubscribe(
 
 type ShippingsESHandler = (es: NDKEvent[], oss: OrderShippingAndEvent[]) => OrderShippingAndEvent[];
 
-const shippingsESHandler: ShippingsESHandler = (es, oss) => {
+const shippingsESHandler: ShippingsESHandler = (es, oses) => {
 	function eventState(e: NDKEvent): ShippingState {
 		return e.kind == OrderShippingKind.Packed ? ShippingState.Liefern : ShippingState.Geliefert;
 	}
 
-	for (const e of es.filter((e) => e.tagValue('d') && e.tagValue('p'))) {
-		const existingOrderShipping = oss.find((os) => os.orderShipping.id == e.tagValue('d')!);
+	const relevantEvent = es
+		.filter((e) => e.tagValue('d') && e.tagValue('p'))
+		.sort((e1, e2) => e2.created_at! - e1.created_at!);
+	for (const e of relevantEvent) {
+		const existingOrderShipping = oses.find((ose) => ose.orderShipping.id == e.tagValue('d')!);
 		if (existingOrderShipping) {
 			const eos = existingOrderShipping.orderShipping;
 			if (e.tagValue('p')! != eos.customerId) {
@@ -55,13 +58,13 @@ const shippingsESHandler: ShippingsESHandler = (es, oss) => {
 					JSON.stringify(existingOrderShipping);
 				console.error(message);
 				alert(message); // todo: use error component
-			} else if (eventState(e) > eos.state) {
+			} else if (eventState(e) >= eos.state) {
 				eos.update(OrderShipping.fromEvent(e));
 				existingOrderShipping.event = e;
 			}
-		} else oss.unshift({ orderShipping: OrderShipping.fromEvent(e), event: e });
+		} else oses.unshift({ orderShipping: OrderShipping.fromEvent(e), event: e });
 	}
-	return oss;
+	return oses;
 };
 
 let seenEventIds: string[] = [];
