@@ -1,3 +1,11 @@
+# Release 0.3.2
+
+(01-03-2024)
+
+## Features
+
+- Allow changing Values in the different States after Submission. Restrict the reedition of packed boxes as long as it is not delivered.
+
 # Release 0.3.1
 
 (06-02-2024)
