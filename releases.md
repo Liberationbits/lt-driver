@@ -1,3 +1,15 @@
+# Release 0.3.3
+
+(20-03-2024)
+
+## Features
+
+- Upgrade project dependencies to latest possible:
+  - Svelte and Vite
+  - daisyUI and postcss
+  - nostr-ndk packages
+  - ...
+
 # Release 0.3.2
 
 (01-03-2024)
