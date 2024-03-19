@@ -3,7 +3,7 @@
 	import PickupHubInputModal from '$components/modals/PickupHubInputModal.svelte';
 	import { currentUser } from '$stores/current-user';
 	import { openModal } from 'svelte-modals';
-	import type PickupHub from '$lib/model/pickup-hub';
+	import { type PickupHub } from '$lib/model/pickup-hub';
 	import { btnColorFor } from '$utils/ui-helpers';
 	import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
 	import { orderShippingsStore } from '$stores/order-shippings';

@@ -1,4 +1,4 @@
-import type PickupHub from '$lib/model/pickup-hub';
+import { type PickupHub } from '$lib/model/pickup-hub';
 import { readable } from 'svelte/store';
 
 // For now we have hard coded pickup hubs

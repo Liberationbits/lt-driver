@@ -54,7 +54,7 @@
 </div>
 
 <div class="mx-2 flex gap-2">
-	<label for="boxes" class="text-accent-content">Kisten:</label>
+	<label for="boxes" class="text-center">Kisten:</label>
 	{#if shippingState <= ShippingState.Liefern}
 		<input
 			id="boxes"
@@ -70,7 +70,7 @@
 
 	<label
 		for="returned-boxes"
-		class="text-accent-content"
+		class="text-center"
 		hidden={shippingState < ShippingState.Liefern}>Kisten zurück:</label
 	>
 	{#if shippingState > ShippingState.Laden}
