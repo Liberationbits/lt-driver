@@ -18,7 +18,7 @@
 	</div>
 
 	<div class="navbar-center flex-auto">
-		<h1 class="font-bol ml-1 mr-1 truncate w-60 text-base text-center normal-case md:text-xl">
+		<h1 class="font-bol ml-1 mr-1 w-60 truncate text-center text-base normal-case md:text-xl">
 			{pageTitle}{displayName}
 		</h1>
 

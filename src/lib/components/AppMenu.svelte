@@ -11,7 +11,7 @@
 		<Truck class="h-8 w-8" />
 	</div>
 
-	<ul class="menu rounded-box w-[245px] divide-y divide-neutral-800 p-0">
+	<ul class="menu w-[245px] divide-y divide-neutral-800 rounded-box p-0">
 		<li><a href="/"><House class="h-4 w-4" />Liefertour-Fahrer</a></li>
 		<li><div><GitBranch size={20} /><span>Version: {version}</span></div></li>
 		<li>

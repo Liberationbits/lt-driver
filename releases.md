@@ -1,3 +1,11 @@
+# Release 0.3.4
+
+(25-03-2024)
+
+## Features
+
+- Improve behavior in case of network failures.
+
 # Release 0.3.3
 
 (20-03-2024)

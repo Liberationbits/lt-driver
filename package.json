@@ -1,6 +1,6 @@
 {
 	"name": "lt-driver",
-	"version": "0.3.3",
+	"version": "0.3.4",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -38,7 +38,8 @@
 		"tslib": "^2.6.2",
 		"typescript": "^5.2.2",
 		"vite": "^5.1.6",
-		"vitest": "^1.4.0"
+		"vitest": "^1.4.0",
+		"dotenv": "^16.3.1"
 	},
 	"dependencies": {
 		"@macfja/svelte-persistent-store": "^2.4.0",
