@@ -18,7 +18,7 @@
 			<span class="px-0 md:px-4 lg:px-9"> Einloggen </span>
 		</div>
 
-		<ul class="menu rounded-box w-60 divide-y divide-neutral-800 p-0">
+		<ul class="menu w-60 divide-y divide-neutral-800 rounded-box p-0">
 			<div>
 				<div class="menu-title flex justify-center">
 					<div class="text-base-100-content p-1 text-center text-base font-medium">Einloggen</div>

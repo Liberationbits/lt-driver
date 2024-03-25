@@ -26,9 +26,9 @@ export const defaultRelays = dev
 			'wss://relay.snort.social',
 			'wss://nostr.einundzwanzig.space',
 			'wss://relay.nostr.band',
-			'wss://nostr.bitcoiner.social',
+			'wss://nostr.bitcoiner.social'
 			//'wss://nostr-pub.wellorder.net'
-	  ];
+		];
 
 const _ndk: NDKSvelte = new NDKSvelte({
 	explicitRelayUrls: defaultRelays,

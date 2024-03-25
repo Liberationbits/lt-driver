@@ -29,7 +29,7 @@
 		<Avatar ndk={$ndk} user={$currentUser} />
 	</div>
 
-	<ul class="menu rounded-box w-[245px] divide-y divide-neutral-800 p-0">
+	<ul class="menu w-[245px] divide-y divide-neutral-800 rounded-box p-0">
 		<div>
 			<div class="menu-title flex items-center justify-between gap-2 px-[22px] py-[19px]">
 				<div class="flex w-0 flex-grow flex-row items-center gap-4">

@@ -68,10 +68,8 @@
 		<div class="xs:w-3 w-16">{packingBoxes}</div>
 	{/if}
 
-	<label
-		for="returned-boxes"
-		class="text-center"
-		hidden={shippingState < ShippingState.Liefern}>Kisten zurück:</label
+	<label for="returned-boxes" class="text-center" hidden={shippingState < ShippingState.Liefern}
+		>Kisten zurück:</label
 	>
 	{#if shippingState > ShippingState.Laden}
 		<input
