@@ -16,7 +16,7 @@ export class NDKSvelteWrapper {
 			.then((sig) => {
 				this.registeredStores.forEach((store) => {
 					const filterArr = Array.isArray(store.filters) ? store.filters : [store.filters];
-					if (filterArr.some((filter) => true)) {
+					if (filterArr.some((filter) => filter?.authors?.includes(e.author.pubkey))) {
 						store.update((es) => [e].concat(es));
 					}
 				});
