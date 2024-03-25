@@ -2,6 +2,7 @@ import OrderShipping, { ShippingState } from '$lib/model/order-shipping';
 import { get as getStore, writable, derived, type Writable, type Readable } from 'svelte/store';
 import ndk from '$stores/ndk';
 import type { NDKEvent, NDKFilter } from '@nostr-dev-kit/ndk';
+import { NDKSvelteWrapper } from '$lib/NDKSvelteWrapper';
 
 export enum OrderShippingKind {
 	Packed = 32020,
@@ -26,7 +27,8 @@ const drivers = [
 	'71df211931d26ee41121d295bd43cbc7e382505e333b5c13d4016ced9542d9d7' // Antonio
 ];
 
-const shippingEventsStore = $ndk.storeSubscribe(
+export const NDKWrapper = new NDKSvelteWrapper($ndk);
+const shippingEventsStore = NDKWrapper.storeSubscribe(
 	{
 		kinds: [OrderShippingKind.Packed, OrderShippingKind.Delivered],
 		authors: drivers,

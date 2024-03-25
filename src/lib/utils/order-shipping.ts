@@ -2,7 +2,7 @@ import type OrderShipping from '$lib/model/order-shipping';
 import { ShippingState } from '$lib/model/order-shipping';
 import { currentUser } from '$stores/current-user';
 import ndk from '$stores/ndk';
-import { OrderShippingKind } from '$stores/order-shippings';
+import { NDKWrapper, OrderShippingKind } from '$stores/order-shippings';
 import { NDKEvent } from '@nostr-dev-kit/ndk';
 import { get as getStore } from 'svelte/store';
 
@@ -26,6 +26,5 @@ export async function storeOrderShipping(os: OrderShipping, currentState: Shippi
 	ndkEvent.pubkey = getStore(currentUser)!.pubkey;
 	ndkEvent.tags.push(['d', os.id], ['p', os.customerId]);
 	ndkEvent.content = JSON.stringify(os);
-	await ndkEvent.sign();
-	await ndkEvent.publish();
+	await NDKWrapper.publish(ndkEvent);
 }
